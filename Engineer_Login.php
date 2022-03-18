@@ -1,8 +1,9 @@
 <?php
+
     $title = "Engineer Login | Actemium";
     include("Header.php");
 
-    include("DataBase/Engineer_Login.php");
+    include("DataBase/Verify_Engineer_Login.php");
 
     $error_msg = "";
 
@@ -10,44 +11,54 @@
     {
         $valid = ValidateEngineerLogin();
 
-        if($valid){
-            //session
-            echo "sss";
+        if($valid)
+        {
+            session_start();
+            $_SESSION['UserType'] = "Engineer";
+            $_SESSION['Username'] = $_POST["username"];
+           
+            header("Location: Engineer/Engineer_Index.php"); 
+            exit();
         }
-        else{
-            $error_msg = "Username or Password is Incorrect";
-            echo "hhh";
+
+        else
+        {
+            $error_msg = "Username or Password were Incorrect";
         }
     }
+
 ?>
 
-<div class="container">
 
-    <main role="main">
+    <div class="container">
 
-        <h1>Engineer Login</h1>
+        <main role="main" class="text-center py-5">
 
-        <div class="login_box">
+            <h1 class="py-4">Engineer Login</h1>
 
-            <h2>Login to your <br> Engineer Account</h2>
+            <section class="login-box bg-blue text-white container ms-auto w-lg-50">
 
-            <form method="post">
+                <h2 class="py-3">Login to your <br> Engineer Account</h2>
 
-                <div class="form-group input-group-lg">
+                <form method="post">
 
-                    <input type="text" class="form-control" placeholder="Username" name="username" required>
-                    <input type="password" class="form-control" placeholder="Password" name="password" required>
-                    <p> <?php echo $error_msg; ?></p>
-                    <input class="btn" type="submit" value="Login" name="submit">
+                    <div class="input-group-lg mx-2 mt-4">
 
-                </div>
+                        <input type="text" class="form-control my-3" placeholder="Username" name="username" required>
+                        <input type="password" class="form-control my-3" placeholder="Password" name="password" required>
 
-            </form>
+                        <p class="my-3"><?php echo $error_msg; ?></p>
+                        <input class="btn btn-green mb-3" type="submit" value="Login" name="submit">
 
-        </div>
+                    </div>
 
-    </main>
+                </form>
 
-</div>
+            </section>
+
+        </main>
+
+    </div>
+
 
 <?php include("Footer.php"); ?>

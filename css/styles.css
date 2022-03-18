@@ -1,0 +1,27 @@
+.btn-green {
+  background-color: transparent;
+  border-color: #c6d200;
+  color: white;
+}
+
+.btn-green:hover {
+  background-color: #c6d200;
+  color: black;
+}
+
+.bg-blue {
+  background-color: #004289;
+}
+
+.footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  white-space: nowrap;
+  line-height: 60px;
+}
+
+.login-box {
+  max-width: 516px;
+  border-radius: 10px;
+}

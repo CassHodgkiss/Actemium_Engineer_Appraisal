@@ -1,35 +1,64 @@
 <?php
+
     $title = "Admin Login | Actemium";
-    include("Header.php"); 
+    include("Header.php");
+
+    include("DataBase/Verify_Admin_Login.php");
+
+    $error_msg = "";
+
+    if (isset($_POST['submit']))
+    {
+        $valid = ValidateAdminLogin();
+
+        if($valid)
+        {
+            session_start();
+            $_SESSION['UserType'] = "Admin";
+            $_SESSION['Username'] = $_POST["username"];
+           
+            header("Location: Admin/Admin_Index.php"); 
+            exit();
+        }
+
+        else
+        {
+            $error_msg = "Username or Password were Incorrect";
+        }
+    }
+
 ?>
 
-<div class="container">
 
-    <main role="main">
+    <div class="container">
 
-        <h1>Admin Login</h1>
+        <main role="main" class="text-center py-5">
 
-        <div class="login_box">
+            <h1 class="py-4">Admin Login</h1>
 
-            <h2>Login to your <br> Admin Account</h2>
+            <section class="login-box bg-blue text-white container ms-auto w-lg-50">
 
-            <form method="post">
+                <h2 class="py-3">Login to your <br> Admin Account</h2>
 
-                <div class="form-group input-group-lg">
+                <form method="post">
 
-                    <input type="text" class="form-control" placeholder="Username" name="username" required>
-                    <input type="password" class="form-control" placeholder="Password" name="password" required>
+                    <div class="input-group-lg mx-2 mt-4">
 
-                    <input class="btn" type="submit" value="Login" name="submit">
+                        <input type="text" class="form-control my-3" placeholder="Username" name="username" required>
+                        <input type="password" class="form-control my-3" placeholder="Password" name="password" required>
 
-                </div>
+                        <p class="my-3"><?php echo $error_msg; ?></p>
+                        <input class="btn btn-green mb-3" type="submit" value="Login" name="submit">
 
-            </form>
+                    </div>
 
-        </div>
+                </form>
 
-    </main>
+            </section>
 
-</div>
+        </main>
+
+    </div>
+
 
 <?php include("Footer.php"); ?>

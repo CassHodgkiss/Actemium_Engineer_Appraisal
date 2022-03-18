@@ -1,7 +1,7 @@
 <?php
 
-    function checkSession ($path) {
-
+    function checkSession ($path) 
+    {
         //Expire the session if user is inactive for 30
         //minutes or more.
         $expireAfter = 30; //this value is in minutes
@@ -30,5 +30,5 @@
         $timeOut = ($expireAfter*60)+1; //1 second after the max session allowed. 
         header("Refresh: $timeOut; URL=$url"); //refresh the screen
     }
-    
+
 ?>
