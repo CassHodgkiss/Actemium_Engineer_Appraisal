@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="en">
+
   <head>
     <?php echo "<title>" . $title . "</title>" ?>
     
@@ -19,7 +20,7 @@
 			<nav class="navbar navbar-expand-md navbar-toggleable-md navbar-light bg-white border-bottom box-shadow mb-3">
 
 				<div class="container">
-					<a class="navbar-brand" href="index.php">Auction Site</a>
+					<a class="navbar-brand" href="index.php">Actemium</a>
 
 					<button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
 							aria-expanded="false" aria-label="Toggle navigation">
@@ -31,23 +32,19 @@
 						<ul class="navbar-nav">
 
 							<li class="nav-item">
-								<a class="nav-link text-dark" href="Auctions.php">View Auctions</a>
+								<a class="nav-link text-dark" href="Engineer_Login.php">Engineer Login</a>
 							</li>
 							
 							<li class="nav-item">
-								<a class="nav-link text-dark" href="index.php">Apply</a>
+								<a class="nav-link text-dark" href="TeamLeader_Login.php">Team Leader Login</a>
 							</li>
 
 							<li class="nav-item">
-								<a class="nav-link text-dark" href="SellerLogin.php">Seller Login</a>
+								<a class="nav-link text-dark" href="Manager_Login.php">Manager Login</a>
 							</li>
 
 							<li class="nav-item">
-								<a class="nav-link text-dark" href="CustomerLogin.php">Customer Login</a>
-							</li>
-
-							<li class="nav-item">
-								<a class="nav-link text-dark" href="AdminLogin.php">Admin Login</a>
+								<a class="nav-link text-dark" href="Admin_Login.php">Admin Login</a>
 							</li>
 
 						</ul>
