@@ -61,7 +61,7 @@ body {
 }
 
 .container {
-  min-height: 100%;
+  max-height: 900px;
 }
 
 h1,
@@ -76,237 +76,38 @@ h3 {
   margin: 20px;
 }
 
-.login_apply {
+.login_box {
+  background-color: #004289;
+  color: white;
   display: flex;
-  flex: 1;
-  justify-content: space-between;
+  flex-direction: column;
   width: 80%;
   margin: auto;
-  margin-top: 100px;
-  flex-direction: column;
-}
-
-.back {
-  background-color: #ebf4f5;
-  width: 50%;
-  display: block;
-  margin: auto;
-  margin-top: 50px;
-  height: 50px;
-  border: none;
-  box-shadow: 2px 2px #dfe8ea;
-  padding: 0px;
-}
-
-.box h2,
-.application_box h2 {
-  margin-top: 30px;
-  margin-bottom: 30px;
-  font-size: 40px;
-}
-
-.container {
-  max-width: 1000px;
-}
-
-.application_box {
-  background-color: #ebf4f5;
-  text-align: center;
   border-radius: 10px;
-  box-shadow: 4px 4px #dfe8ea;
-  display: flex;
-  flex-direction: column;
-  margin: auto;
-  margin-top: 70px;
-  margin-bottom: 30px;
-  width: 50%;
+  text-align: center;
+  margin-top: 75px;
 }
 
-input {
-  width: 100%;
-  margin-bottom: 15px;
-}
-
-.form-group {
-  margin: auto;
-  width: 80%;
-}
-
-.input-group {
-  margin-bottom: 15px;
-}
-
-.btn {
-  margin-bottom: 30px;
+form {
   margin-top: 10px;
-  width: 70%;
 }
 
-.dashboard {
-  margin: auto;
-}
-
-.fill_button {
-  border: 0;
-  width: 100%;
-  height: 100%;
-  background-color: transparent;
-  padding: 0;
-  text-decoration: none;
-}
-
-.fill_button:hover {
-  text-decoration: none;
-}
-
-.login_apply_button {
+.login_box input {
   width: 80%;
-  display: block;
   margin: auto;
-  margin-top: 20px;
-  width: 60%;
-  height: 50px;
-  border: none;
-  box-shadow: 2px 2px #dfe8ea;
-  background-color: white;
-  padding: 0px;
+  margin-bottom: 15px;
 }
 
-.login_apply_buttons {
-  width: 100%;
-}
-
-.login_apply_buttons .login_apply_button:not(:first-child) {
-  margin-bottom: 40px;
-}
-
-.dashboard_box,
-.box {
-  background-color: #ebf4f5;
-  text-align: center;
-  border-radius: 10px;
-  box-shadow: 4px 4px #dfe8ea;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  justify-content: space-between;
+input.btn {
+  border-color: #c6d200;
+  color: white;
+  width: 50%;
   margin: auto;
-  margin-bottom: 30px;
-  border: 0;
-  width: 90%;
-}
-
-.box {
-  display: flex;
-}
-
-.auction_grid {
-  width: 95%;
-  display: flex;
-  flex-wrap: wrap;
-  margin: auto;
-  justify-content: center;
-}
-
-.auction {
-  background-color: #ebf4f5;
-  margin: 3px;
-  text-align: center;
-  max-width: 400px;
-  border: 1px solid black;
-}
-
-.resize_img {
-  width: 100%;
-  margin: auto;
-}
-
-.auction_text {
-  text-align: left;
-  margin-left: 5px;
-  margin-bottom: 2px;
-  font-size: 25px;
-}
-
-.auction_info {
-  display: flex;
-  border-top: 1px solid black;
-}
-
-.auction_view_button {
-  background-color: #a1e5fb;
-  box-shadow: 2px 2px #8ccee3;
-  margin-left: auto;
-  margin-right: 10px;
-  margin-top: 20px;
+  margin-top: 10px;
   margin-bottom: 10px;
-  width: 25%;
-  height: 45px;
-  flex: 1;
 }
 
-.auction_data {
-  flex: 4;
-}
-
-.auctionpage_data {
-  margin-top: 100px;
-}
-
-.auctionpage_info{
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-}
-
-.auctionpage_text {
-  margin-top: 10px;
-  margin-left: 10px;
-  margin-right: auto;
-  margin-bottom: 5px;
-  text-align: left;
-  font-size: 25px;
-}
-
-.auctionpage_img {
-  margin: 0;
-  width: 40%;
-  flex: 1;
-}
-
-.auctionpage_bid{
-  margin-top: 10px;
-}
-
-.auctionpage_form{
-  display: flex;
-  justify-content: center;
-}
-
-.auctionpage_bid_amount{
-  margin-right: 5px;
-  margin-bottom: 0;
-} 
-
-.auctionpage_bid_button{
-  background-color: #A1E5FB;
-  width: 50%;
-  margin-bottom: 0;
-}
-
-.description{
-  text-align: left;
-  width: 60%;
-  margin-right: auto;
-  margin-left: 10px;
-}
-
-.auctionpage_info h3{
-  text-align: left;
-  margin-left: 10px;
-}
-
-.auctionpage{
-  width: 60%;
-  margin: auto;
+input.btn:hover {
+  background-color: #c6d200;
+  color: black;
 }

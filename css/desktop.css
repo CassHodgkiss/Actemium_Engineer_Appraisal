@@ -2,31 +2,6 @@
   border-top: 0px;
 }
 
-.login_apply {
-  width: 60%;
-  flex-direction: row;
-  display: flex;
-}
-
-.box {
-  flex: 1;
-  justify-content: center;
-  margin-left: 5px;
-  margin-right: 5px;
-}
-
-.dashboard {
-  display: flex;
-  flex-direction: column;
-  margin-top: 100px;
-}
-
-.dashboard_row {
-  display: flex;
-  flex-direction: row;
-}
-
-.dashboard_box {
-  flex: 1;
-  margin: 0 5px 15px 5px;
+.login_box {
+  width: 40%;
 }
