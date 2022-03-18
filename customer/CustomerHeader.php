@@ -7,9 +7,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 	
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous"> 
-	<link rel="stylesheet" href="css/mobile.css"  />
-	<link rel="stylesheet" href="css/tablet.css" media="only screen and (min-width: 512px)" />
-	<link rel="stylesheet" href="css/desktop.css" media="only screen and (min-width: 768px)" />
+	<link rel="stylesheet" href="/auction_site/css/mobile.css"  />
+	<link rel="stylesheet" href="/auction_site/css/tablet.css" media="only screen and (min-width: 512px)" />
+	<link rel="stylesheet" href="/auction_site/css/desktop.css" media="only screen and (min-width: 768px)" />
 
   </head>
 
@@ -19,7 +19,7 @@
 			<nav class="navbar navbar-expand-md navbar-toggleable-md navbar-light bg-white border-bottom box-shadow mb-3">
 
 				<div class="container">
-					<a class="navbar-brand" href="index.php">Auction Site</a>
+					<a class="navbar-brand" href="/auction_site/customer/CustomerIndex.php">Auction Site</a>
 
 					<button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
 							aria-expanded="false" aria-label="Toggle navigation">
@@ -31,23 +31,15 @@
 						<ul class="navbar-nav">
 
 							<li class="nav-item">
-								<a class="nav-link text-dark" href="Auctions.php">View Auctions</a>
+								<a class="nav-link text-dark" href="/auction_site/Auctions.php">View Auctions</a>
 							</li>
 							
 							<li class="nav-item">
-								<a class="nav-link text-dark" href="index.php">Apply</a>
+								<a class="nav-link text-dark" href="/auction_site/customer/CustomerIndex.php">DashBoard</a>
 							</li>
 
 							<li class="nav-item">
-								<a class="nav-link text-dark" href="SellerLogin.php">Seller Login</a>
-							</li>
-
-							<li class="nav-item">
-								<a class="nav-link text-dark" href="CustomerLogin.php">Customer Login</a>
-							</li>
-
-							<li class="nav-item">
-								<a class="nav-link text-dark" href="AdminLogin.php">Admin Login</a>
+								<a class="nav-link text-dark" href="/auction_site/session/logout.php">Log Out</a>
 							</li>
 
 						</ul>

@@ -1,0 +1,17 @@
+.box {
+  width: 80%;
+  align-self: center;
+}
+
+.auctionpage_bid{
+  margin-top: auto;
+  margin-left: auto;
+  margin-bottom: 0;
+  margin-right: 0;
+}
+
+.auctionpage_data {
+  display: flex;
+  justify-content: center;
+}
+
