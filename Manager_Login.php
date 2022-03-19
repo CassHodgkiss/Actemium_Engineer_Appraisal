@@ -38,7 +38,7 @@
 
             <section class="login-box bg-blue text-white container ms-auto w-lg-50">
 
-                <h2 class="py-3">Login to your <br> Manager Account</h2>
+                <h2 class="pb-3 pt-4">Login to your<br>Manager Account</h2>
 
                 <form method="post">
 
@@ -47,8 +47,11 @@
                         <input type="text" class="form-control my-3" placeholder="Username" name="username" required>
                         <input type="password" class="form-control my-3" placeholder="Password" name="password" required>
 
-                        <p class="my-3"><?php echo $error_msg; ?></p>
-                        <input class="btn btn-green mb-3" type="submit" value="Login" name="submit">
+                        <?php if($error_msg != ""): ?>
+                            <p class="my-3 text-white"><?php echo $error_msg; ?></p>
+                        <?php endif; ?>
+                        
+                        <input class="btn btn-green mt-3 mb-4" type="submit" value="Login" name="submit">
 
                     </div>
 
