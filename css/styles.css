@@ -24,3 +24,7 @@ body {
   white-space: nowrap;
   line-height: 60px;
 }
+
+.pending_appraisals_items {
+  height: 125px;
+}

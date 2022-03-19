@@ -36,7 +36,7 @@
 
             <h1 class="py-4">Engineer Login</h1>
 
-            <section class="login-box bg-blue text-white container ms-auto w-lg-50">
+            <section class="login-box bg-blue text-white container ms-auto w-lg-50 rounded">
 
                 <h2 class="pb-3 pt-4">Login to your<br>Engineer Account</h2>
 
@@ -56,7 +56,7 @@
                         <?php if($error_msg != ""): ?>
                             <p class="my-3 text-white"><?php echo $error_msg; ?></p>
                         <?php endif; ?>
-                        
+
                         <input class="btn btn-green mt-3 mb-4" type="submit" value="Login" name="submit">
 
                     </div>
