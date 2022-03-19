@@ -57,7 +57,7 @@
                             <p class="my-3 text-white"><?php echo $error_msg; ?></p>
                         <?php endif; ?>
 
-                        <input class="btn btn-green mt-3 mb-4" type="submit" value="Login" name="submit">
+                        <input class="btn btn-green mt-3 mb-4 text-white" type="submit" value="Login" name="submit">
 
                     </div>
 

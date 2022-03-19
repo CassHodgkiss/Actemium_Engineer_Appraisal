@@ -17,14 +17,9 @@ body {
   background-color: #004289;
 }
 
-.footer {
+footer {
   position: absolute;
-  bottom: 0;
   width: 100%;
   white-space: nowrap;
   line-height: 60px;
-}
-
-.pending_appraisals_items {
-  height: 125px;
 }

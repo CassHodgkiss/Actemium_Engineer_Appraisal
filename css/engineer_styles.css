@@ -1,0 +1,13 @@
+.pending_overflow_items {
+  max-height: 175px;
+}
+
+.icon_svg {
+  width: 40px;
+}
+
+@media (max-width: 576px) {
+  .info_btn {
+    width: 80%;
+  }
+}
