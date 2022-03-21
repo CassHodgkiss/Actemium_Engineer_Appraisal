@@ -42,7 +42,7 @@
 
             <form method="post" class="d-flex">
 
-                <div class="input-group-lg mx-2 mt-4 w-100">
+                <div class="input-group-lg mx-2 w-100">
 
                     <div class="form-floating text-black">
                         <input type="text" class="form-control my-3" id="floatingUsername" placeholder="Username"

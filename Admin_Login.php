@@ -40,16 +40,17 @@
 
             <h2 class="pb-3 pt-4">Login to your<br>Admin Account</h2>
 
-            <form method="post">
+            <form method="post" class="d-flex">
 
-                <div class="input-group-lg mx-2 mt-4 text-black">
+                <div class="input-group-lg mx-2 w-100">
 
-                    <div class="form-floating">
+                    <div class="form-floating text-black">
                         <input type="text" class="form-control my-3" id="floatingUsername" placeholder="Username"
                             name="username" required>
                         <label for="floatingUsername">Username</label>
                     </div>
-                    <div class="form-floating">
+
+                    <div class="form-floating text-black">
                         <input type="password" class="form-control my-3" id="floatingPassword" placeholder="Password"
                             name="password" required>
                         <label for="floatingPassword">Password</label>
@@ -59,7 +60,7 @@
                     <p class="my-3 text-white"><?php echo $error_msg; ?></p>
                     <?php endif; ?>
 
-                    <input class="btn  mt-3 mb-4 text-white" type="submit" value="Login" name="submit">
+                    <button class="btn btn-green-border mt-3 mb-4 mx-auto" type="submit" name="submit">Login</button>
 
                 </div>
 
