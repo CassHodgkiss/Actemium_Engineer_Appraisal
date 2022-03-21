@@ -2,6 +2,7 @@
 <html lang="en">
 
   <head>
+	  
     <?php echo "<title>" . $title . "</title>" ?>
     
     <meta charset="utf-8">
@@ -17,7 +18,7 @@
 
 	<header>
 
-		<nav class="navbar navbar-expand-md bg-dark navbar-dark py-3">
+		<nav class="navbar navbar-expand-md bg-dark navbar-dark py-3 fixed-top">
 
 			<div class="container">
 

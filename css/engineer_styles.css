@@ -1,13 +1,50 @@
 .pending_overflow_items {
-  max-height: 175px;
+  max-height: 300px;
 }
 
 .icon_svg {
-  width: 40px;
+  height: 2em;
+  width: 2em;
 }
 
-@media (max-width: 576px) {
-  .info_btn {
-    width: 80%;
+/* https://www.w3schools.com/howto/howto_js_rangeslider.asp */
+
+.slidecontainer {
+  width: 100%;
+}
+
+.slider {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 10px;
+  background: #d3d3d3;
+  outline: none;
+  opacity: 0.7;
+  -webkit-transition: 0.2s;
+  transition: opacity 0.2s;
+}
+
+.slider:hover {
+  opacity: 1;
+}
+
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 10px;
+  height: 20px;
+  background: #004289;
+  cursor: pointer;
+}
+
+@media (min-width: 992px) {
+  .question_box {
+    width: 75%;
   }
+}
+
+.svg_arrow {
+  filter: brightness(0) invert(1);
+  width: 40px;
+  height: 40px;
 }

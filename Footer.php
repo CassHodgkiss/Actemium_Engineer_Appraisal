@@ -1,5 +1,5 @@
 
-    <footer  class="border-top footer text-muted">
+    <footer  class="py-3 bg-dark text-white text-center">
             <div class="container">
                 &copy; 2022 Actemium
             </div>

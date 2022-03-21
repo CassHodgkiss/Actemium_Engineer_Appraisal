@@ -1,25 +1,60 @@
+html {
+  height: 100%;
+}
+
 body {
   color: black;
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  font-family: "Source Sans Pro", Arial, sans-serif;
 }
 
-.btn-green {
-  background-color: transparent;
-  border-color: #c6d200;
-  color: white;
-}
-
-.btn-green:hover {
-  background-color: #c6d200;
-  color: black;
-}
-
-.bg-blue {
-  background-color: #004289;
+body::before {
+  display: block;
+  content: "";
+  height: 75px;
 }
 
 footer {
-  position: absolute;
+  position: relative;
+  margin-top: auto;
   width: 100%;
-  white-space: nowrap;
-  line-height: 60px;
+}
+
+.btn {
+  background-color: transparent;
+  background-color: #004087;
+  color: white;
+  text-transform: uppercase;
+  font-weight: 700;
+  font-size: 1.1rem;
+  align-items: center;
+  display: flex;
+  justify-content: center;
+}
+
+.btn-green-border {
+  border-color: #c6d200;
+}
+
+.btn:hover {
+  background-color: #c6d200;
+  color: #004087;
+}
+
+.btn-disabled {
+  background-color: #003f8770;
+}
+
+.bg-blue {
+  background-color: #004087;
+}
+
+.progress-bar {
+  background-color: rgb(177, 214, 255);
+  color: black;
+  overflow: visible;
+  padding-left: 2px;
+  padding-right: 2px;
 }
