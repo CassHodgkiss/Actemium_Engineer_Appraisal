@@ -8,7 +8,6 @@
     include("Database/Engineer_Data.php");
 
     $engineer = GetEngineerData();
-
     
     include("Database/Appraisals.php");
 
@@ -22,7 +21,7 @@
         date_default_timezone_set("Europe/London");
         $current_date = new DateTime("now");
         $end_date = new DateTime($appraisal_data["date_due"]);
-        if( $current_date > $end_date) { $overdue_count++; }
+        if($current_date > $end_date && GetAppraisalsAnswersData($appraisal_data["engineer_appraisal_id"]) < $appraisal_data["question_count"]) { $overdue_count++; }
     }
 
 ?>
@@ -317,17 +316,30 @@
                         <div class="accordion accordion-flush border text-start m-3 mb-0 pending_overflow_items overflow-auto"
                             id="pendingAppraisals">
 
-                            <?php foreach($appraisals_data as $appraisal_data): ?>
-                            <?php $appraisal_questions_done = GetAppraisalsAnswersData($appraisal_data["engineer_appraisal_id"]); ?>
+                            <?php 
+                            foreach($appraisals_data as $appraisal_data): 
+                            $appraisal_questions_done = GetAppraisalsAnswersData($appraisal_data["engineer_appraisal_id"]); 
+                            $percentage = ($appraisal_questions_done / $appraisal_data["question_count"]) * 100 
+                            ?>
 
                             <?php  
-
                             date_default_timezone_set("Europe/London");
                             $current_date = new DateTime("now");
                             $end_date = new DateTime($appraisal_data["date_due"]);
 
-                            if( $current_date < $end_date) { $overdue = FALSE; } else { $overdue = TRUE; }
+                            if( $current_date < $end_date) 
+                            { 
+                                $overdue = FALSE; 
+                            } 
+                            else 
+                            { 
+                                if($appraisal_questions_done == $appraisal_data["question_count"])
+                                {
+                                    continue;
+                                }
 
+                                $overdue = TRUE; 
+                            }
                             ?>
 
                             <div class="accordion-item border m-2">
@@ -339,10 +351,29 @@
                                         data-bs-target="#appraisalsCollapse<?php echo $appraisal_data["engineer_appraisal_id"]; ?>"
                                         aria-expanded="false"
                                         aria-controls="appraisalsCollapse<?php echo $appraisal_data["engineer_appraisal_id"]; ?>">
-                                        <img src="../bootstrap-icons\<?php if($overdue) { echo "exclamation-triangle-fill.svg"; } else { echo "exclamation-circle.svg"; } ?>"
-                                            alt="Warning Overdue" class="img-fluid icon_svg me-2">
+
+                                        <img src="../bootstrap-icons\<?php 
+                                        
+                                        if($appraisal_questions_done == $appraisal_data["question_count"])
+                                        {
+                                            echo "check-circle.svg"; 
+                                        }
+                                        else
+                                        {
+                                            if($overdue) 
+                                            { 
+                                                echo "exclamation-triangle-fill.svg"; 
+                                            } 
+                                            else 
+                                            { 
+                                                echo "exclamation-circle.svg"; 
+                                            } 
+                                        }
+                                        ?>" alt="Warning Overdue" class="img-fluid icon_svg me-2">
                                         Appraisal <?php if($overdue) { echo "Overdue"; } else { echo "Due"; } ?> for
+
                                         <?php echo (new DateTime($appraisal_data["date_due"]))->format('d M Y');?>
+
                                     </button>
 
                                 </h2>
@@ -360,8 +391,6 @@
                                         <p class="m-1 mt-1">Due for
                                             <?php echo (new DateTime($appraisal_data["date_due"]))->format('d M Y'); ?>
                                         </p>
-
-                                        <?php $percentage = ($appraisal_questions_done / $appraisal_data["question_count"]) * 100 ?>
 
                                         <div class="progress mt-2 m-1" style="height: 20px;">
                                             <div class="progress-bar <?php if($overdue) { echo "bg-danger"; } ?>"

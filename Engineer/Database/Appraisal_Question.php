@@ -114,7 +114,6 @@
         $results = [];
         while ($row=$result->fetchArray())
         {     
-            echo "<br>";
             $answer_id = $row["answer_id"];
             $question_type = $row["question_type"];
 

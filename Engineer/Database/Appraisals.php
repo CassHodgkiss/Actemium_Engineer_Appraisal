@@ -21,9 +21,10 @@
         $results = [];
         while ($row=$result->fetchArray())
         {
-            $start_date = new DateTime($row["date_start"]); 
+            $start_date = new DateTime($row["date_start"]);
+            $end_date = new DateTime($row["date_due"]); 
 
-            if($start_date < $current_date){ 
+            if($start_date < $current_date){            
                 $results[]=$row;
             }
 

@@ -22,7 +22,7 @@
 
             <div class="m-1 text-white bg-blue rounded d-flex justify-content-between">
 
-                <h3 class="m-3 text-start">Pending Appraisals</h3>
+                <h3 class="m-3 text-start">Past Appraisals</h3>
 
             </div>
 
@@ -43,17 +43,13 @@
 
                     if($current_date < $end_date) 
                     { 
-                        $overdue = FALSE; 
-                    } 
-                    else 
-                    { 
-                        if($appraisal_questions_done == $appraisal_data["question_count"])
-                        {
-                            continue;
-                        }
-                        
-                        $overdue = TRUE; 
+                        continue;
                     }
+                    
+                    if($appraisal_questions_done != $appraisal_data["question_count"])
+                    {
+                        continue;
+                    }                    
 
                     ?>
 
@@ -67,7 +63,7 @@
                                 <h2 class="h3"><?php echo $appraisal_data["name"]; ?></h2>
 
                                 <p class="my-2 ms-1">
-                                    <?php echo $time_left; if($overdue) { echo " Ago"; } else { echo " Left"; } ?>
+                                    <?php echo $time_left . " Ago"; ?>
                                 </p>
 
                             </div>
@@ -97,9 +93,9 @@
                         <?php $percentage = ($appraisal_questions_done / $appraisal_data["question_count"]) * 100 ?>
 
                         <div class="progress mt-2 m-1" style="height: 20px;">
-                            <div class="progress-bar <?php if($overdue) { echo "bg-danger"; } ?>" role="progressbar"
-                                style="width: <?php echo $percentage; ?>%" aria-valuenow="<?php echo $percentage; ?>"
-                                aria-valuemin="0" aria-valuemax="<?php echo $appraisal_data["question_count"]; ?>">
+                            <div class="progress-bar" role="progressbar" style="width: 100%"
+                                aria-valuenow="<?php echo $percentage; ?>" aria-valuemin="0"
+                                aria-valuemax="<?php echo $appraisal_data["question_count"]; ?>">
                                 <?php echo $appraisal_questions_done; ?>/<?php echo $appraisal_data["question_count"]; ?>
                             </div>
                         </div>
