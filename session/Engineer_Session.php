@@ -2,7 +2,7 @@
 
     //Session Logic for Engineer
 
-    $path = "../Engineer_Login.php"; 
+    $path = "../Index.php"; 
      
     session_start();
 

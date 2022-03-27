@@ -1,6 +1,6 @@
 <?php
 
-    $title = "Admin Login | Actemium";
+    $title = "Actemium";
     include("Header.php");
 
     include("DataBase/Verify_Admin_Login.php");
@@ -9,15 +9,15 @@
 
     if (isset($_POST['submit']))
     {
-        $valid = ValidateAdminLogin();
+        $admin = ValidateAdminLogin();
 
-        if($valid)
+        if($admin != NULL)
         {
             session_start();
-            $_SESSION['UserType'] = "Admin";
-            $_SESSION['Username'] = $_POST["username"];
-           
-            header("Location: Admin/Admin_Index.php"); 
+                $_SESSION['UserType'] = "Admin";
+                $_SESSION['Username'] = $_POST["username"];
+            
+                header("Location: Admin/Admin_Index.php"); 
             exit();
         }
 
@@ -34,11 +34,9 @@
 
     <main role="main" class="text-center py-5">
 
-        <h1 class="py-4">Admin Login</h1>
+        <section class="login-box bg-blue text-white container ms-auto w-lg-50 rounded d-flex flex-column mt-5">
 
-        <section class="login-box bg-blue text-white container ms-auto w-lg-50 rounded">
-
-            <h2 class="pb-3 pt-4">Login to your<br>Admin Account</h2>
+            <h2 class="pb-4 pt-4 m-0">Admin Login</h2>
 
             <form method="post" class="d-flex">
 
