@@ -33,17 +33,10 @@
 
                     <ul class="navbar-nav ms-auto">
 
-                        <li class="nav-item px-lg-1">
-                            <a class="nav-link" href="Engineer_Login.php">Engineer Login</a>
+                        <li class="nav-item ps-lg-4">
+                            <a class="nav-link" href="Index.php">User Login</a>
                         </li>
 
-                        <li class="nav-item px-lg-1">
-                            <a class="nav-link" href="TeamLeader_Login.php">Team Leader Login</a>
-                        </li>
-
-                        <li class="nav-item px-lg-1">
-                            <a class="nav-link" href="Manager_Login.php">Manager Login</a>
-                        </li>
 
                         <li class="nav-item ps-lg-4">
                             <a class="nav-link" href="Admin_Login.php">Admin Login</a>
