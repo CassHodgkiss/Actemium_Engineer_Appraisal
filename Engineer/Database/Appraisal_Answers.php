@@ -44,10 +44,17 @@
                 break;
 
             case "Slider":
+
+                $sql = "INSERT INTO Slider_Answers (answer_id, answer) VALUES (:answer_id, :answer)";
+
                 break;
+                
             case "Multi-Choice":
+
                 break;
+
             case "Multi-Writen":
+
                 break;
         }
 
@@ -90,10 +97,18 @@
                 break;
 
             case "Slider":
+
+                $sql = "UPDATE Slider_Answers SET answer = :answer WHERE answer_id = :answer_id";
+
                 break;
+
             case "Multi-Choice":
+
                 break;
+
             case "Multi-Writen":
+
+
                 break;
         }
 

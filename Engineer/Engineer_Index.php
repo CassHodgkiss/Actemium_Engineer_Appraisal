@@ -15,13 +15,21 @@
 
     $appraisals_data = GetAppraisalsData();
 
+    date_default_timezone_set("Europe/London");
+    $current_date = new DateTime("now");
+
+    $appraisals_count = 0;
     $overdue_count = 0;
 
     foreach($appraisals_data as $appraisal_data){
-        date_default_timezone_set("Europe/London");
-        $current_date = new DateTime("now");
+        $start_date = new DateTime($appraisal_data["date_start"]);
         $end_date = new DateTime($appraisal_data["date_due"]);
-        if($current_date > $end_date && GetAppraisalsAnswersData($appraisal_data["engineer_appraisal_id"]) < $appraisal_data["question_count"]) { $overdue_count++; }
+
+        $has_completed = FALSE;
+        if(GetAppraisalsAnswersData($appraisal_data["engineer_appraisal_id"]) == $appraisal_data["question_count"]) { $has_completed = TRUE; }
+        
+        if($current_date > $start_date && $current_date < $end_date & !$has_completed) { $appraisals_count++; }
+        if($current_date > $start_date && $current_date > $end_date & !$has_completed) { $overdue_count++; }
     }
 
 ?>
@@ -112,7 +120,7 @@
                                     <p class="m-0 h5 col-9 col-lg-8">Pending Apraisals</p>
 
                                     <span
-                                        class="badge bg-secondary col-2 p-2 rounded-pill"><?php echo count($appraisals_data) - $overdue_count; ?></span>
+                                        class="badge bg-secondary col-2 p-2 rounded-pill"><?php echo $appraisals_count; ?></span>
 
                                 </div>
 
@@ -383,7 +391,7 @@
 
                                     <div class="accordion-body">
 
-                                        <h4>Appraisal Name</h4>
+                                        <h4><?php echo $appraisal_data["name"]; ?></h4>
 
                                         <p class="m-1 mt-3">Set on
                                             <?php echo (new DateTime($appraisal_data["date_start"]))->format('d M Y'); ?>
@@ -548,7 +556,6 @@
                 </section>
 
             </div>
-
 
         </div>
 

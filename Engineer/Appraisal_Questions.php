@@ -68,17 +68,48 @@
 
     //User Input
 
+    $error_msg = "";
+
     if(isset($_POST["submit"])) 
     {
-        if($answered_current){
-            UpdateAnswer($appraisal_question_data["question_id"], $appraisal_question_data["question_type"], $appraisal_data["engineer_appraisal_id"]);
+        $has_error = FALSE;
+        switch($appraisal_question_data["question_type"])
+        {
+            case "Writen":
+                $answer = trim($_POST["answer"]);
+
+                if($answer == "") { $error_msg = "Cannot Accept an Empty Answer Box"; $has_error = TRUE; }
+
+                if($answered_current && $appraisal_answer_data[$appraisal_question]["answer"] == $answer) { $error_msg = "Given Answer is the Same as Current Answer";  $has_error = TRUE; }
+
+                break;
+                
+            case "Slider":
+                $answer = $_POST["answer"];
+
+                if($answered_current && $appraisal_answer_data[$appraisal_question]["answer"] == $answer) { $error_msg = "Given Answer is the Same as Current Answer";  $has_error = TRUE; }
+
+                break;
+            case "Multi-Choice":
+                break;
+            case "Multi-Writen":
+                break;
+
         }
-        else{
-            SaveAnswer($appraisal_data["engineer_appraisal_id"], $appraisal_question_data["question_id"], $appraisal_question_data["question_type"]);
+        if(!$has_error){
+
+            if($answered_current){
+                UpdateAnswer($appraisal_question_data["question_id"], $appraisal_question_data["question_type"], $appraisal_data["engineer_appraisal_id"]);
+            }
+            else{
+                SaveAnswer($appraisal_data["engineer_appraisal_id"], $appraisal_question_data["question_id"], $appraisal_question_data["question_type"]);
+            }
+
+            header("Location:Appraisal_Questions.php?id=". $engineer_appraisal_id ."&num=". $appraisal_question); 
+            exit;
+
         }
-        
-        header("Location:Appraisal_Questions.php?id=". $engineer_appraisal_id ."&num=". $appraisal_question); 
-        exit;
+
     }
 
 ?>
@@ -97,27 +128,59 @@
                     <?php echo $appraisal_question_data["question"]; ?>
                 </h3>
 
+                <!-- Writen Question -->
+
+                <?php 
+                switch($appraisal_question_data["question_type"]):
+                case "Writen": 
+                ?>
+
                 <form method="post" class="mt-5">
 
-                    <?php 
-                    switch($appraisal_question_data["question_type"]):
-                        case "Writen": ?>
-
-                    <!-- Writen Question -->
                     <div class="m-1 m-md-3">
                         <textarea class="form-control my-3 p-2" rows="5" name="answer"
                             placeholder="Type your Answer Here"
                             required><?php if($answered_current) { echo $appraisal_answer_data[$appraisal_question]["answer"]; } ?></textarea>
                     </div>
 
-                    <button type="submit" name="submit"
-                        class="btn my-4 w-50 mx-auto d-block"><?php if($answered_current) { echo "Update"; } else { echo "Save"; }?></button>
+                    <?php break; ?>
+                    <!-- Slider Question -->
+
+                    <?php case "Slider": ?>
+
+                    <?php
+                        
+                    $lower = $appraisal_question_data["lower_value"];
+                    $upper = $appraisal_question_data["upper_value"];
+                    $answer = $appraisal_answer_data[$appraisal_question]["answer"];
+
+                    ?>
+
+                    <form method="post" class="mt-5 range-field slidercontainer w-100 mt-1">
+
+                        <p class="m-1 mt-3 text-center" id="slidervalue"><?php echo $answer; ?></p>
+
+                        <div class="d-flex justify-content-evenly">
+
+                            <span class="font-weight-bold indigo-text m-0 h5"><?php echo $lower; ?></span>
+
+                            <input class="border-0 w-75 slider m-2" name="answer" type="range"
+                                value="<?php echo $answer; ?>" min="<?php echo $lower; ?>" max="<?php echo $upper; ?>"
+                                oninput="document.getElementById('slidervalue').innerHTML = this.value">
+                            <span class="font-weight-bold indigo-text m-0 h5"><?php echo $upper; ?></span>
+
+                        </div>
+
+                        <?php break; ?>
+                        <?php endswitch; ?>
+
+                        <span class="text-danger"><?php echo $error_msg; ?></span>
+
+                        <button type="submit" name="submit"
+                            class="btn my-4 w-50 mx-auto d-block"><?php if($answered_current) { echo "Update"; } else { echo "Save"; }?></button>
 
 
-                    <?php endswitch; ?>
-
-
-                </form>
+                    </form>
             </div>
         </div>
 
