@@ -3,7 +3,7 @@
     $title = "Appraisals | Actemium";
     include("Header.php");
 
-    include("../Session/Engineer_Session.php");
+    include("../Session/Team_Leader_Session.php");
 
     include("Database/Appraisals.php");
 
@@ -31,7 +31,7 @@
                 <div class="row row-cols-1 m-2">
 
                     <?php foreach($appraisals_data as $appraisal_data): ?>
-                    <?php $appraisal_questions_done = GetAppraisalsAnswersData($appraisal_data["engineer_appraisal_id"]); ?>
+                    <?php $appraisal_questions_done = GetAppraisalsAnswersData($appraisal_data["team_leader_appraisal_id"]); ?>
 
                     <?php $time_left = GetTimeLeft(new DateTime($appraisal_data["date_due"])); ?>
 
@@ -53,7 +53,7 @@
 
                     ?>
 
-                    <a href="Appraisal_Questions.php?id=<?php echo $appraisal_data["engineer_appraisal_id"]; ?>"
+                    <a href="Appraisal_Questions.php?id=<?php echo $appraisal_data["team_leader_appraisal_id"]; ?>"
                         class="col border my-2 p-0 text-decoration-none text-black">
 
                         <div class="d-md-flex justify-content-between m-2 text-center text-md-start">

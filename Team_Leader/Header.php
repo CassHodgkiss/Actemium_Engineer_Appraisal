@@ -22,7 +22,7 @@
 
             <div class="container">
 
-                <a class="navbar-brand" href="Engineer_Index.php">Actemium</a>
+                <a class="navbar-brand" href="Team_Leader_Index.php">Actemium</a>
 
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar">
                     <span class="navbar-toggler-icon"></span>
@@ -33,7 +33,7 @@
                     <ul class="navbar-nav ms-auto">
 
                         <li class="nav-item px-lg-1">
-                            <a class="nav-link" href="Engineer_Index.php">DashBoard</a>
+                            <a class="nav-link" href="Team_Leader_Index.php">DashBoard</a>
                         </li>
 
                         <li class="nav-item px-lg-1">
@@ -42,6 +42,10 @@
 
                         <li class="nav-item px-lg-1">
                             <a class="nav-link" href="Past_Appraisals.php">Past Appraisals</a>
+                        </li>
+
+                        <li class="nav-item px-lg-1">
+                            <a class="nav-link" href="Team_Appraisals.php">Team Appraisals</a>
                         </li>
 
                         <li class="nav-item px-lg-4">

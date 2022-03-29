@@ -3,7 +3,7 @@
     $title = "Appraisals | Actemium";
     include("Header.php");
 
-    include("../Session/Engineer_Session.php");
+    include("../Session/Team_leader_Session.php");
 
     //Check $_Get inputs are set
 
@@ -23,14 +23,14 @@
         $appraisal_question = $_GET["num"];
     }
 
-    $engineer_appraisal_id = $_GET["id"];
+    $team_leader_appraisal_id = $_GET["id"];
 
     //Inport DB Data
 
     include("Database/Appraisal_Question.php");
     include("Database/Appraisal_Answers.php");
 
-    $appraisal_data = GetAppraisalData($engineer_appraisal_id);
+    $appraisal_data = GetAppraisalData($team_leader_appraisal_id);
 
     //Checks if the data is empty
     
@@ -40,13 +40,13 @@
         exit;
     }
 
-    if($appraisal_question < 0) { header("Location:Appraisal_Questions.php?id=". $engineer_appraisal_id ."&num=0"); exit;}
-    if($appraisal_question > $appraisal_data["question_count"] - 1) { header("Location:Appraisal_Questions.php?id=". $engineer_appraisal_id ."&num=". $appraisal_data['question_count'] - 1); exit;}
+    if($appraisal_question < 0) { header("Location:Appraisal_Questions.php?id=". $team_leader_appraisal_id ."&num=0"); exit;}
+    if($appraisal_question > $appraisal_data["question_count"] - 1) { header("Location:Appraisal_Questions.php?id=". $team_leader_appraisal_id ."&num=". $appraisal_data['question_count'] - 1); exit;}
 
 
-    $appraisal_question_data = GetAppraisalQuestionData($engineer_appraisal_id, $appraisal_question);
+    $appraisal_question_data = GetAppraisalQuestionData($team_leader_appraisal_id, $appraisal_question);
 
-    $appraisal_answer_data = GetAppraisalAnswerData($engineer_appraisal_id);
+    $appraisal_answer_data = GetAppraisalAnswerData($team_leader_appraisal_id);
 
     //Checks if the current question has been answered or not
     $answered_current = FALSE;
@@ -137,13 +137,13 @@
         if(!$has_error){
 
             if($answered_current){
-                UpdateAnswer($appraisal_question_data["question_id"], $appraisal_question_data["question_type"], $appraisal_data["engineer_appraisal_id"], $answer);
+                UpdateAnswer($appraisal_question_data["question_id"], $appraisal_question_data["question_type"], $appraisal_data["team_leader_appraisal_id"], $answer);
             }
             else{
-                SaveAnswer($appraisal_data["engineer_appraisal_id"], $appraisal_question_data["question_id"], $appraisal_question_data["question_type"], $answer);
+                SaveAnswer($appraisal_data["team_leader_appraisal_id"], $appraisal_question_data["question_id"], $appraisal_question_data["question_type"], $answer);
             }
 
-            header("Location:Appraisal_Questions.php?id=". $engineer_appraisal_id ."&num=". $appraisal_question); 
+            header("Location:Appraisal_Questions.php?id=". $team_leader_appraisal_id ."&num=". $appraisal_question); 
             exit;
 
         }
@@ -277,10 +277,18 @@
 
                     <?php if($appraisal_question > 0): ?>
 
-                    <a href="Appraisal_Questions.php?id=<?php echo $engineer_appraisal_id; ?>&num=<?php echo $appraisal_question - 1; ?>"
+                    <a href="Appraisal_Questions.php?id=<?php echo $team_leader_appraisal_id; ?>&num=<?php echo $appraisal_question - 1; ?>"
                         class="btn border-0 p-2 m-1">
                         <img src="../bootstrap-icons\arrow-left.svg" alt="Back" class="svg_arrow m-1">
                     </a>
+
+                    <?php else: ?>
+
+                    <?php //just to keep the other elements from moving this is just a place holder and has no function ?>
+
+                    <div class="p-2 border-0 opacity-0 m-1">
+                        <div class="svg_arrow"></div>
+                    </div>
 
                     <?php endif; ?>
 
@@ -298,7 +306,7 @@
 
                     <?php if($appraisal_question < $appraisal_question_data["question_count"] - 1): ?>
 
-                    <a href="Appraisal_Questions.php?id=<?php echo $engineer_appraisal_id; ?>&num=<?php echo $appraisal_question + 1; ?>"
+                    <a href="Appraisal_Questions.php?id=<?php echo $team_leader_appraisal_id; ?>&num=<?php echo $appraisal_question + 1; ?>"
                         class="btn border-0 p-2 m-1">
                         <img src="../bootstrap-icons\arrow-right.svg" alt="Next" class="svg_arrow m-1">
                     </a>
@@ -330,7 +338,7 @@
                     for($i = 0; $i < $question_count; $i++): 
                     ?>
 
-                    <a href="Appraisal_Questions.php?id=<?php echo $engineer_appraisal_id; ?>&num=<?php echo $i; ?>"
+                    <a href="Appraisal_Questions.php?id=<?php echo $team_leader_appraisal_id; ?>&num=<?php echo $i; ?>"
                         class="col-2 col-md-1" style="padding: 2px; height: 30px;" aria-label="Completed">
 
                         <div class="

@@ -3,7 +3,7 @@
     $title = "Appraisals | Actemium";
     include("Header.php");
 
-    include("../Session/Engineer_Session.php");
+    include("../Session/Team_Leader_Session.php");
 
     include("Database/Appraisals.php");
 
@@ -36,7 +36,7 @@
                     
                     foreach($appraisals_data as $appraisal_data)
                     {
-                        $appraisal_questions_done = GetAppraisalsAnswersData($appraisal_data["engineer_appraisal_id"]);
+                        $appraisal_questions_done = GetAppraisalsAnswersData($appraisal_data["team_leader_appraisal_id"]);
                         
                         if($appraisal_questions_done != $appraisal_data["question_count"])
                         {   
@@ -76,7 +76,7 @@
 
                     ?>
 
-                    <a href="Appraisal_Questions.php?id=<?php echo $pending_appraisal["engineer_appraisal_id"]; ?>"
+                    <a href="Appraisal_Questions.php?id=<?php echo $pending_appraisal["team_leader_appraisal_id"]; ?>"
                         class="col border my-2 p-0 text-decoration-none text-black">
 
                         <div class="d-md-flex justify-content-between m-2 text-center text-md-start">
@@ -113,13 +113,13 @@
 
                         </div>
 
-                        <?php $percentage = ($pending_appraisal["appraisal_questions_done"]  / $pending_appraisal["question_count"]) * 100 ?>
+                        <?php $percentage = ($appraisal_data["appraisal_questions_done"]  / $pending_appraisal["question_count"]) * 100 ?>
 
                         <div class="progress mt-2 m-1" style="height: 20px;">
                             <div class="progress-bar <?php if($overdue) { echo "bg-danger"; } ?>" role="progressbar"
                                 style="width: <?php echo $percentage; ?>%" aria-valuenow="<?php echo $percentage; ?>"
                                 aria-valuemin="0" aria-valuemax="<?php echo $pending_appraisal["question_count"]; ?>">
-                                <?php echo $pending_appraisal["appraisal_questions_done"] ; ?>/<?php echo $pending_appraisal["question_count"]; ?>
+                                <?php echo $appraisal_data["appraisal_questions_done"] ; ?>/<?php echo $pending_appraisal["question_count"]; ?>
                             </div>
                         </div>
 

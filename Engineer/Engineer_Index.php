@@ -11,7 +11,7 @@
     
     include("Database/Appraisals.php");
 
-    include("Database/time_left.php");
+    include("../Functions/time_left.php");
 
     $appraisals_data = GetAppraisalsData();
 

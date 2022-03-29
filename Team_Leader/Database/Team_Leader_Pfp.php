@@ -2,7 +2,7 @@
 
     $image = NULL;
 
-    $file = 'C:/xampp/data/actemium/engineer_pfp/engineer_' . $_GET['id'];
+    $file = 'C:/xampp/data/actemium/team_leader_pfp/team_leader_' . $_GET['id'];
 
     if(file_exists($file . ".jpg"))
     {
@@ -12,7 +12,7 @@
     
         header('Content-Length: ' . filesize($file));
     
-        header('Content-Disposition: attachment; filename="EngineerPfp.jpg"'); 
+        header('Content-Disposition: attachment; filename="Team_LeaderPfp.jpg"'); 
     
         readfile($file);
         exit;
@@ -26,7 +26,7 @@
     
         header('Content-Length: ' . filesize($file));
     
-        header('Content-Disposition: attachment; filename="EngineerPfp.png"'); 
+        header('Content-Disposition: attachment; filename="Team_LeaderPfp.png"'); 
     
         readfile($file);
         exit;

@@ -7,7 +7,7 @@
 
         $sql = "SELECT * FROM Engineer_Appraisals ea
         INNER JOIN Appraisals a ON a.appraisal_id = ea.appraisal_id  
-        AND ea.engineer_username = :engineer_username";
+        WHERE ea.engineer_username = :engineer_username";
 
         $stmt = $db->prepare($sql);
     

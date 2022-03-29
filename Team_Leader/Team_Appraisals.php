@@ -3,13 +3,13 @@
     $title = "Appraisals | Actemium";
     include("Header.php");
 
-    include("../Session/Engineer_Session.php");
+    include("../Session/Team_Leader_Session.php");
 
     include("Database/Appraisals.php");
 
     include("../Functions/time_left.php");
 
-    $appraisals_data = GetAppraisalsData();
+    $pending_appraisals = GetTeamAppraisalsData();
 
 ?>
 
@@ -22,7 +22,7 @@
 
             <div class="m-1 text-white bg-blue rounded d-flex justify-content-between">
 
-                <h3 class="m-3 text-start">Pending Appraisals</h3>
+                <h3 class="m-3 text-start">Team Appraisals</h3>
 
             </div>
 
@@ -30,27 +30,9 @@
 
                 <div class="row row-cols-1 m-2">
 
-                    <?php 
-
-                    $pending_appraisals = []; 
-                    
-                    foreach($appraisals_data as $appraisal_data)
-                    {
-                        $appraisal_questions_done = GetAppraisalsAnswersData($appraisal_data["engineer_appraisal_id"]);
-                        
-                        if($appraisal_questions_done != $appraisal_data["question_count"])
-                        {   
-                            $appraisal_data["appraisal_questions_done"] = $appraisal_questions_done;
-                            $pending_appraisals[] = $appraisal_data;
-                        }
-
-                    }
-                    
-                    ?>
-
                     <?php if(count($pending_appraisals) == 0): ?>
 
-                    <p>You Currently have no Pending Appraisals</p>
+                    <p>Your Team Currently have no Pending Appraisals</p>
 
                     <?php else: ?>
 
@@ -76,7 +58,7 @@
 
                     ?>
 
-                    <a href="Appraisal_Questions.php?id=<?php echo $pending_appraisal["engineer_appraisal_id"]; ?>"
+                    <a href="Appraisal_Data.php?id=<?php echo $pending_appraisal["appraisal_id"]; ?>"
                         class="col border my-2 p-0 text-decoration-none text-black">
 
                         <div class="d-md-flex justify-content-between m-2 text-center text-md-start">
@@ -113,16 +95,7 @@
 
                         </div>
 
-                        <?php $percentage = ($pending_appraisal["appraisal_questions_done"]  / $pending_appraisal["question_count"]) * 100 ?>
-
-                        <div class="progress mt-2 m-1" style="height: 20px;">
-                            <div class="progress-bar <?php if($overdue) { echo "bg-danger"; } ?>" role="progressbar"
-                                style="width: <?php echo $percentage; ?>%" aria-valuenow="<?php echo $percentage; ?>"
-                                aria-valuemin="0" aria-valuemax="<?php echo $pending_appraisal["question_count"]; ?>">
-                                <?php echo $pending_appraisal["appraisal_questions_done"] ; ?>/<?php echo $pending_appraisal["question_count"]; ?>
-                            </div>
-                        </div>
-
+                        <!-- slider here -->
                     </a>
 
                     <?php endforeach; ?>
