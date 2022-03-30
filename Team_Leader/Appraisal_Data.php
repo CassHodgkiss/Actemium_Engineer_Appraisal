@@ -60,9 +60,9 @@
 
             </div>
 
-            <div class="container overflow-auto">
+            <div class="overflow-auto border mx-2 my-4">
 
-                <table class="table border m-1 my-3">
+                <table class="table m-0">
                     <thead>
                         <tr>
 
@@ -109,7 +109,8 @@
                             <?php endforeach; ?>
 
                             <td class="p-0">
-                                <a href="" class="text-decoration-none">
+                                <a href="Appraisal_Question_Data.php?id=<?php echo $appraisal_id; ?>&num=<?php echo $i; ?>"
+                                    class="text-decoration-none">
                                     <p class="m-1 p-1 text-black">View</p>
                                 </a>
                             </td>
