@@ -217,6 +217,7 @@
                             value="<?php if($answered_current) { echo $answer; } else { echo $lower; } ?>"
                             min="<?php echo $lower; ?>" max="<?php echo $upper; ?>"
                             oninput="document.getElementById('slidervalue').innerHTML = this.value">
+
                         <span class="font-weight-bold indigo-text m-0 h5"><?php echo $upper; ?></span>
 
                     </div>

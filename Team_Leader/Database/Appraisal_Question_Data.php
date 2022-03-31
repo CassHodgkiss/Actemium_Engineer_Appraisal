@@ -9,8 +9,7 @@
         INNER JOIN Appraisals_Questions aq ON a.appraisal_id = aq.appraisal_id 
         INNER JOIN Questions q ON aq.question_id = q.question_id 
         WHERE a.appraisal_id = :appraisal_id 
-        AND aq.question_num = :appraisal_question 
-        ORDER BY aq.question_num";
+        AND aq.question_num = :appraisal_question";
 
         $stmt = $db->prepare($sql);
 
@@ -70,8 +69,7 @@
         INNER JOIN Appraisals_Questions aq ON q.question_id = aq.question_id AND aq.appraisal_id = :appraisal_id
         WHERE ea.appraisal_id = :appraisal_id 
         AND e.team_leader_username = :team_leader_username  
-        AND aq.question_num = :appraisal_question
-        ORDER BY aq.question_num";
+        AND aq.question_num = :appraisal_question";
 
         $stmt = $db->prepare($sql);
 

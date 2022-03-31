@@ -11,6 +11,8 @@
 
     $appraisals_data = GetAppraisalsData();
 
+    date_default_timezone_set("Europe/London");
+
 ?>
 
 
@@ -36,9 +38,13 @@
                     
                     foreach($appraisals_data as $appraisal_data)
                     {
+                            
+                        $current_date = new DateTime("now");
+                        $end_date = new DateTime($appraisal_data["date_due"]);
+    
                         $appraisal_questions_done = GetAppraisalsAnswersData($appraisal_data["engineer_appraisal_id"]);
                         
-                        if($appraisal_questions_done != $appraisal_data["question_count"])
+                        if(!($appraisal_questions_done == $appraisal_data["question_count"] && $current_date > $end_date))
                         {   
                             $appraisal_data["appraisal_questions_done"] = $appraisal_questions_done;
                             $pending_appraisals[] = $appraisal_data;
@@ -50,7 +56,7 @@
 
                     <?php if(count($pending_appraisals) == 0): ?>
 
-                    <p>You Currently have no Pending Appraisals</p>
+                    <p class="m-3">You Currently have no Pending Appraisals</p>
 
                     <?php else: ?>
 
@@ -60,10 +66,6 @@
                     <?php $time_left = GetTimeLeft(new DateTime($pending_appraisal["date_due"])); ?>
 
                     <?php  
-
-                    date_default_timezone_set("Europe/London");
-                    $current_date = new DateTime("now");
-                    $end_date = new DateTime($pending_appraisal["date_due"]);
 
                     if($current_date < $end_date) 
                     { 

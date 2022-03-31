@@ -49,11 +49,11 @@
 
                     if($current_date < $end_date) 
                     { 
-                        $overdue = FALSE; 
+                        $is_past = FALSE; 
                     } 
                     else 
                     { 
-                        $overdue = TRUE; 
+                        $is_past = TRUE; 
                     }
 
                     ?>
@@ -68,7 +68,7 @@
                                 <h2 class="h3"><?php echo $pending_appraisal["name"]; ?></h2>
 
                                 <p class="my-2 ms-1">
-                                    <?php echo $time_left; if($overdue) { echo " Ago"; } else { echo " Left"; } ?>
+                                    <?php echo $time_left; if($is_past) { echo " Ago"; } else { echo " Left"; } ?>
                                 </p>
 
                             </div>
