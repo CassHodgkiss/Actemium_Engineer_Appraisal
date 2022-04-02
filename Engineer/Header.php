@@ -40,10 +40,6 @@
                             <a class="nav-link" href="Appraisals.php">Appraisals</a>
                         </li>
 
-                        <li class="nav-item px-lg-1">
-                            <a class="nav-link" href="Past_Appraisals.php">Past Appraisals</a>
-                        </li>
-
                         <li class="nav-item px-lg-4">
                             <a class="nav-link" href="../Session/logout.php">Log Out</a>
                         </li>

@@ -38,19 +38,19 @@
 
         switch($question_type)
         {
-            case "Writen":
+            case "writen":
 
                 $sql = "INSERT INTO Writen_Answers (answer_id, answer) VALUES (:answer_id, :answer)";
 
                 break;
 
-            case "Slider":
+            case "slider":
 
                 $sql = "INSERT INTO Slider_Answers (answer_id, answer) VALUES (:answer_id, :answer)";
 
                 break;
                 
-            case "Multi-Choice":
+            case "multi-choice":
 
                 //$answer = 
 
@@ -91,19 +91,19 @@
 
         switch($question_type)
         {
-            case "Writen":
+            case "writen":
 
                 $sql = "UPDATE Writen_Answers SET answer = :answer WHERE answer_id = :answer_id";
 
                 break;
 
-            case "Slider":
+            case "slider":
 
                 $sql = "UPDATE Slider_Answers SET answer = :answer WHERE answer_id = :answer_id";
 
                 break;
 
-            case "Multi-Choice":
+            case "multi-choice":
 
                 $sql = "UPDATE Multi_Choice_Answers SET answer = :answer WHERE answer_id = :answer_id";
 

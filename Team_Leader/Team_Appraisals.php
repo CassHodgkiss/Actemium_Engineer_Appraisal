@@ -24,6 +24,15 @@
 
                 <h3 class="m-3 text-start">Team Appraisals</h3>
 
+                <div class="my-auto mx-3">
+                    <div class="input-group flex-end flex-row">
+                        <select class="btn btn-green-border text-center px-2 py-2 w-100" id="option_select">
+                            <option value="pending_appraisal" class="bg-white text-black text-start">Pending</option>
+                            <option value="past_appraisal" class="bg-white text-black text-start">Finished</option>
+                        </select>
+                    </div>
+                </div>
+
             </div>
 
             <div class="container">
@@ -59,7 +68,7 @@
                     ?>
 
                     <a href="Appraisal_Data.php?id=<?php echo $pending_appraisal["appraisal_id"]; ?>"
-                        class="col border my-2 p-0 text-decoration-none text-black">
+                        class="col border my-2 p-0 text-decoration-none text-black <?php if($is_past) { echo "past_appraisal d-none"; } else { echo "pending_appraisal"; } ?>">
 
                         <div class="d-md-flex justify-content-between m-2 text-center text-md-start">
 
@@ -112,6 +121,45 @@
     </main>
 
 </div>
+
+<script>
+document.getElementById('option_select').addEventListener('change', function() {
+
+    var value = this.value;
+
+    var pending_appraisals = document.getElementsByClassName("pending_appraisal");
+
+    for (i = 0; i < pending_appraisals.length; i++) {
+        pending_appraisals[i].classList.add("d-none");
+    }
+
+    var past_appraisals = document.getElementsByClassName("past_appraisal");
+
+    for (i = 0; i < past_appraisals.length; i++) {
+        past_appraisals[i].classList.add("d-none");
+    }
+
+
+
+    switch (value) {
+        case "pending_appraisal":
+
+            for (i = 0; i < pending_appraisals.length; i++) {
+                pending_appraisals[i].classList.remove("d-none");
+            }
+
+            break;
+
+        case "past_appraisal":
+
+            for (i = 0; i < past_appraisals.length; i++) {
+                past_appraisals[i].classList.remove("d-none");
+            }
+
+            break;
+    }
+});
+</script>
 
 
 <?php include("Footer.php"); ?>

@@ -75,7 +75,7 @@
         $has_error = FALSE;
         switch($appraisal_question_data["question_type"])
         {
-            case "Writen":
+            case "writen":
 
                 $answer = trim($_POST["answer"]);
 
@@ -89,7 +89,7 @@
 
                 break;
                 
-            case "Slider":
+            case "slider":
 
                 $answer = $_POST["answer"];
 
@@ -101,7 +101,7 @@
 
                 break;
 
-            case "Multi-Choice":
+            case "multi-choice":
 
                 if(!isset($_POST["checkboxes"]))
                 {
@@ -168,7 +168,7 @@
 
                 <?php 
                 switch($appraisal_question_data["question_type"]):
-                case "Writen": 
+                case "writen": 
                 ?>
 
                 <!-- Writen Question -->
@@ -191,7 +191,7 @@
 
                 <?php break; ?>
 
-                <?php case "Slider": ?>
+                <?php case "slider": ?>
 
                 <!-- Slider Question -->
 
@@ -230,7 +230,7 @@
 
                 <?php break; ?>
 
-                <?php case "Multi-Choice": ?>
+                <?php case "multi-choice": ?>
 
                 <!-- Multi-Choice Question -->
 

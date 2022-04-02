@@ -42,11 +42,11 @@
                         </li>
 
                         <li class="nav-item px-lg-1">
-                            <a class="nav-link" href="Past_Appraisals.php">Past Appraisals</a>
+                            <a class="nav-link" href="Team_Appraisals.php">Team Appraisals</a>
                         </li>
 
                         <li class="nav-item px-lg-1">
-                            <a class="nav-link" href="Team_Appraisals.php">Team Appraisals</a>
+                            <a class="nav-link" href="Create_Appraisal.php">Create Appraisal</a>
                         </li>
 
                         <li class="nav-item px-lg-4">

@@ -36,7 +36,7 @@
     
     if($appraisal_data == NULL){
         $path = "Appraisals.php";
-        //header("Location:".$path);
+        header("Location:".$path);
         exit;
     }
 
@@ -256,6 +256,7 @@
                         </div>
 
                         <?php endfor; ?>
+
                     </div>
 
                     <span class="text-danger"><?php echo $error_msg; ?></span>
@@ -270,7 +271,7 @@
             </div>
         </div>
 
-        <div class="my-4 container overflow-hidden">
+        <div class="my-4 container">
 
             <div class="row gx-5">
 

@@ -108,17 +108,6 @@
                             <?php endif; ?>
                             <?php endforeach; ?>
 
-                            <?php
-
-                            $answered = FALSE;
-                            foreach($questions[$i] as $question)
-                            {
-                                if($question) { $answered = TRUE; break; }
-                            } 
-                            ?>
-
-                            <?php if($question): ?>
-
                             <td class="p-0">
                                 <a href="Appraisal_Question_Data.php?id=<?php echo $appraisal_id; ?>&num=<?php echo $i; ?>"
                                     class="text-decoration-none">
@@ -126,11 +115,6 @@
                                 </a>
                             </td>
 
-                            <?php else: ?>
-
-                            <td class="p-0"></td>
-
-                            <?php endif; ?>
 
                         </tr>
 

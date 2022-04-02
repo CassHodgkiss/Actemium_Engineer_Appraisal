@@ -24,19 +24,19 @@
 
         switch($question_type)
         {
-            case "Writen":
+            case "writen":
 
                 $sql = "SELECT * FROM Writen WHERE question_id = :question_id";
 
                 break;
                 
-            case "Slider":
+            case "slider":
 
                 $sql = "SELECT * FROM Slider WHERE question_id = :question_id";
 
                 break;
                 
-            case "Multi-Choice":
+            case "multi-choice":
 
                 $sql = "SELECT * FROM Multi_Choice WHERE question_id = :question_id";
 
@@ -88,19 +88,19 @@
 
             switch($question_type)
             {
-                case "Writen":
+                case "writen":
 
                     $sql = "SELECT * FROM Writen_Answers WHERE answer_id = :answer_id";
 
                     break;
 
-                case "Slider":
+                case "slider":
 
                     $sql = "SELECT * FROM Slider_Answers WHERE answer_id = :answer_id";
 
                     break;
 
-                case "Multi-Choice":
+                case "multi-choice":
 
                     $sql = "SELECT * FROM Multi_Choice_Answers WHERE answer_id = :answer_id";
                     
