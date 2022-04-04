@@ -54,9 +54,7 @@
                         <label for="floatingPassword">Password</label>
                     </div>
 
-                    <?php if($error_msg != ""): ?>
                     <p class="my-3 text-white"><?php echo $error_msg; ?></p>
-                    <?php endif; ?>
 
                     <button class="btn btn-green-border mt-3 mb-4 mx-auto" type="submit" name="submit">Login</button>
 

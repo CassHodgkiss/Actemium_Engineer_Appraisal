@@ -15,10 +15,20 @@
 
     $appraisals_data = GetAppraisalsData();
 
-    $pending_appraisals = GetTeamAppraisalsData();
-
+    $e_appraisals = GetTeamAppraisalsData();
+    
     date_default_timezone_set("Europe/London");
     $current_date = new DateTime("now");
+        
+    $engineer_appraisals = [];
+    foreach($e_appraisals as $e_appraisal)
+    {
+        $end_date = new DateTime($e_appraisal["date_due"]);
+        
+        if($end_date < $current_date) { continue; }
+
+        $engineer_appraisals[] = $e_appraisal;
+    }
 
     $appraisals_count = 0;
     $overdue_count = 0;
@@ -42,7 +52,7 @@
     } 
     
     usort($appraisals_data, 'date_compare');
-    usort($pending_appraisals, 'date_compare');
+    usort($engineer_appraisals, 'date_compare');
 
 ?>
 
@@ -170,7 +180,7 @@
                                     <p class="m-0 h5 col-9 col-lg-8">Team Appraisals</p>
 
                                     <span
-                                        class="badge bg-secondary col-2 p-2 rounded-pill"><?php echo count($pending_appraisals); ?></span>
+                                        class="badge bg-secondary col-2 p-2 rounded-pill"><?php echo count($engineer_appraisals); ?></span>
 
                                 </div>
 
@@ -235,52 +245,12 @@
 
                         <div class="card-header bg-white border-0">
 
-                            <h3 class="m-1 p-1 text-white bg-blue rounded">Additional Questions</h3>
+                            <h3 class="m-1 p-1 text-white bg-blue rounded">Pending Questions</h3>
 
                         </div>
 
                         <div class="accordion accordion-flush border text-start m-3 pending_overflow_items overflow-auto"
                             id="additionalQuestions">
-
-                            <?php for($i = 3; $i < 5; $i++): ?>
-
-                            <div class="accordion-item border m-2">
-
-                                <h2 class="accordion-header" id="additionalQuestionsHeading<?php echo $i; ?>">
-
-                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                        data-bs-target="#additionalQuestionsCollapse<?php echo $i; ?>"
-                                        aria-expanded="false"
-                                        aria-controls="additionalQuestionsCollapse<?php echo $i; ?>">
-                                        <img src="../bootstrap-icons\check-circle.svg" alt="Warning Overdue"
-                                            class="img-fluid icon_svg me-2">
-                                        Additional Question For Caj1
-                                    </button>
-
-                                </h2>
-                                <div id="additionalQuestionsCollapse<?php echo $i; ?>"
-                                    class="accordion-collapse collapse"
-                                    aria-labelledby="additionalQuestionsHeading<?php echo $i; ?>">
-
-                                    <div class="accordion-body">
-
-                                        <form>
-                                            <label>Lorem ipsum dolor
-                                                sit amet consectetur adipisicing elit. Sunt?</label>
-                                            <p class="form-control mt-2">
-                                                Lorem ipsum Lorem ipsum Lorem ipsum</p>
-                                            <button type="submit" name="additional_questions"
-                                                id="answer<?php echo $i; ?>" class="btn mt-3 w-75 mx-auto d-block">Mark
-                                                as Read</button>
-                                        </form>
-
-                                    </div>
-
-                                </div>
-
-                            </div>
-
-                            <?php endfor; ?>
 
                             <?php for($i = 0; $i < 2; $i++): ?>
 
@@ -355,7 +325,7 @@
                             $current_date = new DateTime("now");
                             $end_date = new DateTime($appraisal_data["date_due"]);
 
-                            if( $current_date < $end_date) 
+                            if($current_date < $end_date) 
                             { 
                                 $overdue = FALSE; 
                             } 
@@ -454,54 +424,50 @@
 
                         <div class="card-header bg-white border-0">
 
-                            <h3 class="m-1 p-1 text-white bg-blue rounded">Team Appraisals</h3>
+                            <h3 class="m-1 p-1 text-white bg-blue rounded">Pending Team Appraisals</h3>
 
                         </div>
 
                         <div class="accordion accordion-flush border text-start m-3 mb-0 pending_overflow_items overflow-auto"
                             id="pendingAppraisals">
 
-                            <?php 
-                            foreach($pending_appraisals as $pending_appraisal): 
-                            $appraisal_questions_done = GetAppraisalsAnswersData($pending_appraisal["appraisal_id"]); 
-                            $percentage = ($appraisal_questions_done / $pending_appraisal["question_count"]) * 100 
-                            ?>
+                            <?php foreach($engineer_appraisals as $engineer_appraisal): ?>
 
                             <div class="accordion-item border m-2">
 
                                 <h2 class="accordion-header"
-                                    id="appraisalsHeading<?php echo $pending_appraisal["appraisal_id"]; ?>">
+                                    id="appraisalsHeading<?php echo $engineer_appraisal["appraisal_id"]; ?>">
 
                                     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                        data-bs-target="#appraisalsCollapse<?php echo $pending_appraisal["appraisal_id"]; ?>"
+                                        data-bs-target="#teamAppraisals<?php echo $engineer_appraisal["appraisal_id"]; ?>"
                                         aria-expanded="false"
-                                        aria-controls="appraisalsCollapse<?php echo $pending_appraisal["appraisal_id"]; ?>">
+                                        aria-controls="teamAppraisals<?php echo $engineer_appraisal["appraisal_id"]; ?>">
 
                                         <img src="../bootstrap-icons\chat-square-dots.svg"
                                             class="img-fluid icon_svg me-2">
                                         Appraisal Set for
 
-                                        <?php echo (new DateTime($pending_appraisal["date_due"]))->format('d M Y');?>
+                                        <?php echo (new DateTime($engineer_appraisal["date_due"]))->format('d M Y');?>
 
                                     </button>
 
                                 </h2>
-                                <div id="appraisalsCollapse<?php echo $pending_appraisal["appraisal_id"]; ?>"
+                                <div id="teamAppraisals<?php echo $engineer_appraisal["appraisal_id"]; ?>"
                                     class="accordion-collapse collapse"
-                                    aria-labelledby="appraisalsHeading<?php echo $pending_appraisal["appraisal_id"]; ?>">
+                                    aria-labelledby="appraisalsHeading<?php echo $engineer_appraisal["appraisal_id"]; ?>">
 
                                     <div class="accordion-body">
 
-                                        <h4><?php echo $pending_appraisal["name"]; ?></h4>
+                                        <h4><?php echo $engineer_appraisal["name"]; ?></h4>
 
                                         <p class="m-1 mt-3">Set on
-                                            <?php echo (new DateTime($pending_appraisal["date_start"]))->format('d M Y'); ?>
+                                            <?php echo (new DateTime($engineer_appraisal["date_start"]))->format('d M Y'); ?>
                                         </p>
                                         <p class="m-1 mt-1">Due for
-                                            <?php echo (new DateTime($pending_appraisal["date_due"]))->format('d M Y'); ?>
+                                            <?php echo (new DateTime($engineer_appraisal["date_due"]))->format('d M Y'); ?>
                                         </p>
 
-                                        <a href="Appraisal_Data.php?id=<?php echo $pending_appraisal["appraisal_id"]; ?>"
+                                        <a href="Appraisal_Data.php?id=<?php echo $engineer_appraisal["appraisal_id"]; ?>"
                                             class="btn  btn m-auto mt-3 w-75 d-block ">View Appraisal</a>
 
                                     </div>

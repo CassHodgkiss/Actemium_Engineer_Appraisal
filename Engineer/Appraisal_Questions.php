@@ -335,14 +335,13 @@
                     ?>
 
                     <a href="Appraisal_Questions.php?id=<?php echo $engineer_appraisal_id; ?>&num=<?php echo $i; ?>"
-                        class="col-2 col-md-1" style="padding: 2px; height: 30px;" aria-label="Completed">
+                        class="col-2 col-md-1 text-decoration-none text-white" style="padding: 2px; height: 30px;"
+                        aria-label="Completed">
 
-                        <div class="
-                            <?php 
-                            if($answered_table[$i]) { if($appraisal_question == $i) { echo "bg-primary "; } else { echo "bg-success "; } } 
-                            else { if($appraisal_question == $i) { echo "bg-warning "; } else { echo "bg-danger "; } } 
-                            ?>
+                        <div class="<?php if($answered_table[$i]) { if($appraisal_question == $i) { echo "bg-primary "; $type = "Y"; } else { echo "bg-success "; $type = "Y"; } } 
+                            else { if($appraisal_question == $i) { echo "bg-primary "; $type = "N"; } else { echo "bg-secondary "; $type = "N"; } } ?>
                             w-100 h-100">
+                            <?php echo $type; ?>
                         </div>
 
                     </a>
