@@ -32,6 +32,14 @@
         if($current_date > $start_date && $current_date > $end_date & !$has_completed) { $overdue_count++; }
     }
 
+    function date_compare($element1, $element2) {
+        $datetime1 = strtotime($element1['date_due']);
+        $datetime2 = strtotime($element2['date_due']);
+        return $datetime1 - $datetime2;
+    } 
+    
+    usort($appraisals_data, 'date_compare');
+
 ?>
 
 <div class="container">

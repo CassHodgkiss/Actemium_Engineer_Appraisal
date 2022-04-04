@@ -267,19 +267,23 @@
                 <?php endswitch; ?>
 
             </div>
+
         </div>
+
+        <!-- Arrows !-->
 
         <div class="my-4 container overflow-hidden">
 
-            <div class="row gx-5">
+            <div class="row mx-2" style="height: 60px;">
 
-                <div class="col-4 d-flex justify-content-start">
+                <div class="col-4 d-flex justify-content-start p-0">
+
 
                     <?php if($appraisal_question > 0): ?>
 
                     <a href="Appraisal_Questions.php?id=<?php echo $engineer_appraisal_id; ?>&num=<?php echo $appraisal_question - 1; ?>"
-                        class="btn border-0 p-2 m-1">
-                        <img src="../bootstrap-icons\arrow-left.svg" alt="Back" class="svg_arrow m-1">
+                        class="btn border-0">
+                        <img src="../bootstrap-icons\arrow-left.svg" alt="Back" class="svg_arrow">
                     </a>
 
                     <?php endif; ?>
@@ -294,18 +298,18 @@
 
                 </div>
 
-                <div class="col-4 d-flex justify-content-end">
+                <div class="col-4 d-flex justify-content-end p-0">
 
                     <?php if($appraisal_question < $appraisal_question_data["question_count"] - 1): ?>
 
                     <a href="Appraisal_Questions.php?id=<?php echo $engineer_appraisal_id; ?>&num=<?php echo $appraisal_question + 1; ?>"
-                        class="btn border-0 p-2 m-1">
-                        <img src="../bootstrap-icons\arrow-right.svg" alt="Next" class="svg_arrow m-1">
+                        class="btn border-0">
+                        <img src="../bootstrap-icons\arrow-right.svg" alt="Next" class="svg_arrow">
                     </a>
 
                     <?php else: ?>
 
-                    <a href="Appraisals.php" class="btn border-0 m-1">
+                    <a href="Appraisals.php" class="btn border-0">
                         Finish
                     </a>
 

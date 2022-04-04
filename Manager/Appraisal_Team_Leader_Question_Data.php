@@ -3,7 +3,7 @@
     $title = "Appraisals | Actemium";
     include("Header.php");
 
-    include("../Session/Team_Leader_Session.php");
+    include("../Session/Manager_Session.php");
 
     include("Database/chart.php");  
 
@@ -32,7 +32,7 @@
     include("Database/Appraisal_Question_Data.php");
 
     $appraisal_data = GetAppraisalData($appraisal_id, $appraisal_question);
-    $appraisal_answers_data = GetAppraisalAnswerData($appraisal_id, $appraisal_question);
+    $appraisal_answers_data = GetTeamLeaderAppraisalAnswerData($appraisal_id, $appraisal_question);
 
     $has_answers = FALSE;
     if($appraisal_answers_data != NULL)
@@ -75,7 +75,7 @@
 
                 <div class="m-1 text-white bg-blue rounded d-flex justify-content-between">
 
-                    <h3 class="m-3 text-center">Engineer Answers</h3>
+                    <h3 class="m-3 text-center">Team Leader Answers</h3>
 
                 </div>
 
@@ -89,7 +89,7 @@
                                 <tr>
 
                                     <th scope="col" style="width: 20%;">
-                                        <p class="m-1 p-1">Engineers</p>
+                                        <p class="m-1 py-1">Team Leaders</p>
                                     </th>
 
                                     <th scope="col" style="width: 80%;">
@@ -105,7 +105,7 @@
 
                                 <tr>
 
-                                    <th scope="row"><?php echo $appraisal_answer_data["engineer_username"]; ?></th>
+                                    <th scope="row"><?php echo $appraisal_answer_data["team_leader_username"]; ?></th>
 
                                     <td class="p-0">
                                         <p class="m-1 p-1 text-start"><?php echo $appraisal_answer_data["answer"]; ?>
@@ -171,7 +171,7 @@
 
                 <div class="m-1 text-white bg-blue rounded d-flex justify-content-between">
 
-                    <h3 class="m-3 text-center">Engineer Answers</h3>
+                    <h3 class="m-3 text-center">Team Leader Answers</h3>
 
                     <div class="my-auto mx-3">
                         <div class="input-group flex-end flex-row">
@@ -250,7 +250,7 @@
                                         <tr>
 
                                             <th scope="col" style="width: 20%;">
-                                                <p class="m-1 p-1">Engineers</p>
+                                                <p class="m-1 p-1">Team Leaders</p>
                                             </th>
 
                                             <th scope="col" style="width: 80%;">
@@ -267,7 +267,7 @@
                                         <tr>
 
                                             <th scope="row" class="align-middle">
-                                                <?php echo $appraisal_answer_data["engineer_username"]; ?>
+                                                <?php echo $appraisal_answer_data["team_leader_username"]; ?>
                                             </th>
 
                                             <td class="p-0">
@@ -338,7 +338,7 @@
 
                 <div class="m-1 text-white bg-blue rounded d-flex justify-content-between">
 
-                    <h3 class="m-3 text-center">Engineer Answers</h3>
+                    <h3 class="m-3 text-center">Team Leader Answers</h3>
 
                     <div class="my-auto mx-3">
                         <div class="input-group flex-end flex-row">
@@ -417,7 +417,7 @@
                                         <tr>
 
                                             <th scope="col" style="width: 20%;">
-                                                <p class="m-1 p-1">Engineers</p>
+                                                <p class="m-1 p-1">Team Leaders</p>
                                             </th>
 
                                             <?php foreach($choices as $choice): ?>
@@ -445,7 +445,7 @@
                                         <tr>
 
                                             <th scope="row" class="align-middle">
-                                                <?php echo $appraisal_answer_data["engineer_username"]; ?>
+                                                <?php echo $appraisal_answer_data["team_leader_username"]; ?>
                                             </th>
 
                                             <?php foreach($answers as $answer): ?>
@@ -498,7 +498,7 @@
 
         <!-- Arrows -->
 
-        <div class="my-4 container">
+        <div class="my-4 container overflow-hidden">
 
             <div class="row mx-2" style="height: 60px;">
 
@@ -506,7 +506,7 @@
 
                     <?php if($appraisal_question > 0): ?>
 
-                    <a href="Appraisal_Question_Data.php?id=<?php echo $appraisal_id; ?>&num=<?php echo $appraisal_question - 1; ?>"
+                    <a href="Appraisal_Team_Leader_Question_Data.php?id=<?php echo $appraisal_id; ?>&num=<?php echo $appraisal_question - 1; ?>"
                         class="btn border-0">
                         <img src="../bootstrap-icons\arrow-left.svg" alt="Back" class="svg_arrow">
                     </a>
@@ -527,14 +527,14 @@
 
                     <?php if($appraisal_question < $appraisal_data["question_count"] - 1): ?>
 
-                    <a href="Appraisal_Question_Data.php?id=<?php echo $appraisal_id; ?>&num=<?php echo $appraisal_question + 1; ?>"
+                    <a href="Appraisal_Team_Leader_Question_Data.php?id=<?php echo $appraisal_id; ?>&num=<?php echo $appraisal_question + 1; ?>"
                         class="btn border-0">
                         <img src="../bootstrap-icons\arrow-right.svg" alt="Next" class="svg_arrow">
                     </a>
 
                     <?php else: ?>
 
-                    <a href="Appraisal_Data.php?id=<?php echo $appraisal_id; ?>" class="btn border-0">
+                    <a href="Appraisal_Team_Leaders_Data.php?id=<?php echo $appraisal_id; ?>" class="btn border-0">
                         Finish
                     </a>
 

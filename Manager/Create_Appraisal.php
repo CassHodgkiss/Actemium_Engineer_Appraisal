@@ -3,7 +3,7 @@
     $title = "Appraisals | Actemium";
     include("Header.php");
 
-    include("../Session/Team_Leader_Session.php");
+    include("../Session/Manager_Session.php");
 
     include("Database/Create_Appraisal.php");
 
@@ -20,6 +20,10 @@
     if(!isset($_SESSION["appraisal"]["engineers"]))
     {
         $_SESSION["appraisal"]["engineers"] = [];
+    }
+    if(!isset($_SESSION["appraisal"]["team_leaders"]))
+    {
+        $_SESSION["appraisal"]["team_leaders"] = [];
     }
 
     if(isset($_POST["submit"]))
@@ -39,15 +43,18 @@
         {
             if(count($_SESSION["appraisal"]["questions"]) >= 1)
             {
-                if(count($_SESSION["appraisal"]["engineers"]) >= 1)
+                if(count($_SESSION["appraisal"]["engineers"]) >= 1 || count($_SESSION["appraisal"]["team_leaders"]) >= 1)
                 {
                     $details = $_SESSION["appraisal"]["details"];
                     $questions = $_SESSION["appraisal"]["questions"];
                     $engineers = $_SESSION["appraisal"]["engineers"];
+                    $team_leaders = $_SESSION["appraisal"]["team_leaders"];
                 
                     $appraisal_id = CreateAppraisal($details, count($questions));
                 
                     SetEngineers($engineers, $appraisal_id);
+
+                    SetTeamLeaders($team_leaders, $appraisal_id);
                 
                     CreateQuestions($questions, $appraisal_id);
                 
@@ -56,11 +63,10 @@
                     $path = "Appraisal_Creation_Confirmation.php";
                     header("Location:".$path);
                     exit;
-                
                 }
                 else
                 {
-                    $error_msg = "No Engineers are Set";
+                    $error_msg = "No Users are Set";
                 }
             }
             else
@@ -90,12 +96,9 @@
         );
 
         $path = "Create_Appraisals_Questions.php";
-
-        if(isset($_SESSION["appraisal"]["questions"]))
-        {
-            $question_count = count($_SESSION["appraisal"]["questions"]);
-            $path = "Create_Appraisals_Questions.php?id=" . $question_count - 1;
-        }
+        
+        $question_count = count($_SESSION["appraisal"]["questions"]);
+        $path = "Create_Appraisals_Questions.php?id=" . $question_count - 1;
 
         header("Location:".$path);
         exit;
@@ -111,6 +114,21 @@
         );
 
         $path = "Create_Appraisals_Engineers.php";
+
+        header("Location:".$path);
+        exit;
+    }
+
+    if(isset($_POST["add_team_leaders"]))
+    {
+        $_SESSION["appraisal"]["details"] = array
+        (
+            "name" => $_POST["name"], 
+            "start_date" => $_POST["start_date"], 
+            "end_date" => $_POST["end_date"]
+        );
+
+        $path = "Create_Appraisals_Team_Leaders.php";
 
         header("Location:".$path);
         exit;
@@ -146,7 +164,6 @@
                             <label for="floatingStartDate">Start Date</label>
                         </div>
 
-
                         <div class="form-floating text-black">
                             <input type="date" class="form-control my-3" id="floatingEndDate" placeholder="End Date"
                                 name="end_date" value="<?php if($details_made) { echo $details_data["end_date"]; } ?>"
@@ -154,13 +171,24 @@
                             <label for="floatingEndDate">End Date</label>
                         </div>
 
-                        <div class="text-black d-flex flex-row mt-4 mb-4 justify-content-between">
 
-                            <button type="submit" name="add_questions" class="btn btn-green-border w-50 me-1">Add
-                                Questions</button>
+                        <div class="text-black mt-4">
 
-                            <button type="submit" name="add_engineers" class="btn btn-green-border w-50 ms-1">Add
-                                Engineers</button>
+                            <button type="submit" name="add_questions" class="btn btn-green-border w-100">
+                                Add Questions
+                            </button>
+
+                        </div>
+
+                        <div class="text-black d-flex flex-row mt-3 mb-4 justify-content-between">
+
+                            <button type="submit" name="add_engineers" class="btn btn-green-border w-50 me-1">
+                                Add Engineers
+                            </button>
+
+                            <button type="submit" name="add_team_leaders" class="btn btn-green-border w-50 ms-1">
+                                Add Team Leaders
+                            </button>
 
                         </div>
 

@@ -3,7 +3,7 @@
     $title = "Appraisals | Actemium";
     include("Header.php");
 
-    include("../Session/Team_Leader_Session.php");
+    include("../Session/Manager_Session.php");
 
     include("Database/chart.php");  
 
@@ -11,7 +11,7 @@
 
     if(!isset($_GET["id"]))
     {
-        $path = "Appraisal_Data.php"; 
+        $path = "Appraisal_Engineers_Data.php"; 
         header("Location:".$path);
         exit;
     }
@@ -32,7 +32,7 @@
     include("Database/Appraisal_Question_Data.php");
 
     $appraisal_data = GetAppraisalData($appraisal_id, $appraisal_question);
-    $appraisal_answers_data = GetAppraisalAnswerData($appraisal_id, $appraisal_question);
+    $appraisal_answers_data = GetEngineerAppraisalAnswerData($appraisal_id, $appraisal_question);
 
     $has_answers = FALSE;
     if($appraisal_answers_data != NULL)
@@ -492,13 +492,11 @@
             </div>
         </div>
 
-
         <?php endswitch; ?>
-
 
         <!-- Arrows -->
 
-        <div class="my-4 container">
+        <div class="my-4 container overflow-hidden">
 
             <div class="row mx-2" style="height: 60px;">
 
@@ -506,7 +504,7 @@
 
                     <?php if($appraisal_question > 0): ?>
 
-                    <a href="Appraisal_Question_Data.php?id=<?php echo $appraisal_id; ?>&num=<?php echo $appraisal_question - 1; ?>"
+                    <a href="Appraisal_Engineer_Question_Data.php?id=<?php echo $appraisal_id; ?>&num=<?php echo $appraisal_question - 1; ?>"
                         class="btn border-0">
                         <img src="../bootstrap-icons\arrow-left.svg" alt="Back" class="svg_arrow">
                     </a>
@@ -527,14 +525,14 @@
 
                     <?php if($appraisal_question < $appraisal_data["question_count"] - 1): ?>
 
-                    <a href="Appraisal_Question_Data.php?id=<?php echo $appraisal_id; ?>&num=<?php echo $appraisal_question + 1; ?>"
+                    <a href="Appraisal_Engineer_Question_Data.php?id=<?php echo $appraisal_id; ?>&num=<?php echo $appraisal_question + 1; ?>"
                         class="btn border-0">
                         <img src="../bootstrap-icons\arrow-right.svg" alt="Next" class="svg_arrow">
                     </a>
 
                     <?php else: ?>
 
-                    <a href="Appraisal_Data.php?id=<?php echo $appraisal_id; ?>" class="btn border-0">
+                    <a href="Appraisal_Engineers_Data.php?id=<?php echo $appraisal_id; ?>" class="btn border-0">
                         Finish
                     </a>
 

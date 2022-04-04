@@ -3,7 +3,7 @@
     $title = "Appraisals | Actemium";
     include("Header.php");
 
-    include("../Session/Team_Leader_Session.php");
+    include("../Session/Manager_Session.php");
 
     date_default_timezone_set("Europe/London");
 
@@ -21,7 +21,7 @@
 
         if($question_num < 0) { $question_num = 0; }
     }
-    
+
     if(isset($_POST["writen"]))
     {
         $_SESSION["appraisal"]["questions"][$question_num] = array 
@@ -306,7 +306,7 @@
 
                     <?php if($question_num < $question_count - 1): ?>
 
-                    <a href="Create_Appraisals_Questions.php?id=<?php echo $question_num + 1; ?>" class="btn border-0 ">
+                    <a href="Create_Appraisals_Questions.php?id=<?php echo $question_num + 1; ?>" class="btn border-0">
                         <img src="../bootstrap-icons\arrow-right.svg" alt="Next" class="svg_arrow">
                     </a>
 

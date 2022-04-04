@@ -75,7 +75,7 @@
         $has_error = FALSE;
         switch($appraisal_question_data["question_type"])
         {
-            case "Writen":
+            case "writen":
 
                 $answer = trim($_POST["answer"]);
 
@@ -89,7 +89,7 @@
 
                 break;
                 
-            case "Slider":
+            case "slider":
 
                 $answer = $_POST["answer"];
 
@@ -101,7 +101,7 @@
 
                 break;
 
-            case "Multi-Choice":
+            case "multi-choice":
 
                 if(!isset($_POST["checkboxes"]))
                 {
@@ -168,7 +168,7 @@
 
                 <?php 
                 switch($appraisal_question_data["question_type"]):
-                case "Writen": 
+                case "writen": 
                 ?>
 
                 <!-- Writen Question -->
@@ -191,7 +191,7 @@
 
                 <?php break; ?>
 
-                <?php case "Slider": ?>
+                <?php case "slider": ?>
 
                 <!-- Slider Question -->
 
@@ -231,7 +231,7 @@
 
                 <?php break; ?>
 
-                <?php case "Multi-Choice": ?>
+                <?php case "multi-choice": ?>
 
                 <!-- Multi-Choice Question -->
 
@@ -271,26 +271,20 @@
             </div>
         </div>
 
-        <div class="my-4 container">
+        <!-- Arrows -->
 
-            <div class="row gx-5">
+        <div class="my-4 container overflow-hidden">
 
-                <div class="col-4 d-flex justify-content-start">
+            <div class="row mx-2" style="height: 60px;">
+
+                <div class="col-4 d-flex justify-content-start p-0">
 
                     <?php if($appraisal_question > 0): ?>
 
                     <a href="Appraisal_Questions.php?id=<?php echo $team_leader_appraisal_id; ?>&num=<?php echo $appraisal_question - 1; ?>"
-                        class="btn border-0 p-2 m-1">
-                        <img src="../bootstrap-icons\arrow-left.svg" alt="Back" class="svg_arrow m-1">
+                        class="btn border-0">
+                        <img src="../bootstrap-icons\arrow-left.svg" alt="Back" class="svg_arrow">
                     </a>
-
-                    <?php else: ?>
-
-                    <?php //just to keep the other elements from moving this is just a place holder and has no function ?>
-
-                    <div class="p-2 border-0 opacity-0 m-1">
-                        <div class="svg_arrow"></div>
-                    </div>
 
                     <?php endif; ?>
 
@@ -304,18 +298,18 @@
 
                 </div>
 
-                <div class="col-4 d-flex justify-content-end">
+                <div class="col-4 d-flex justify-content-end p-0">
 
                     <?php if($appraisal_question < $appraisal_question_data["question_count"] - 1): ?>
 
                     <a href="Appraisal_Questions.php?id=<?php echo $team_leader_appraisal_id; ?>&num=<?php echo $appraisal_question + 1; ?>"
-                        class="btn border-0 p-2 m-1">
-                        <img src="../bootstrap-icons\arrow-right.svg" alt="Next" class="svg_arrow m-1">
+                        class="btn border-0">
+                        <img src="../bootstrap-icons\arrow-right.svg" alt="Next" class="svg_arrow">
                     </a>
 
                     <?php else: ?>
 
-                    <a href="Appraisals.php" class="btn border-0 m-1">
+                    <a href="Appraisals.php" class="btn border-0">
                         Finish
                     </a>
 
@@ -326,6 +320,7 @@
             </div>
 
         </div>
+
 
         <div class="my-5">
 

@@ -47,7 +47,6 @@
                     
                     foreach($appraisals_data as $appraisal_data)
                     {
-                            
                         $current_date = new DateTime("now");
                         $end_date = new DateTime($appraisal_data["date_due"]);
     
@@ -73,7 +72,15 @@
                         $pending_appraisals[] = $appraisal_data;
 
                     }
-                                        
+                    
+                    function date_compare($element1, $element2) {
+                        $datetime1 = strtotime($element1['date_due']);
+                        $datetime2 = strtotime($element2['date_due']);
+                        return $datetime1 - $datetime2;
+                    } 
+                    
+                    usort($pending_appraisals, 'date_compare');
+                    
                     ?>
 
                     <?php if(count($pending_appraisals) == 0): ?>

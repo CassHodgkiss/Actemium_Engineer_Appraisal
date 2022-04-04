@@ -3,11 +3,11 @@
     $title = "Appraisals | Actemium";
     include("Header.php");
 
-    include("../Session/Team_Leader_Session.php");
+    include("../Session/Manager_Session.php");
 
-    include("Database/Engineers.php");
+    include("Database/Users.php");
 
-    $engineers = GetTeamMembers();
+    $engineers = GetEngineers();
 
     $path = "Create_Appraisal.php";
 
@@ -48,7 +48,7 @@
 
         <div class="bg-blue text-white container ms-auto w-lg-50 rounded d-flex flex-column mt-5">
 
-            <h2 class="pb-4 pt-4 m-0">Team Members</h2>
+            <h2 class="pb-4 pt-4 m-0">Engineers</h2>
 
             <div class="container mt-3">
 

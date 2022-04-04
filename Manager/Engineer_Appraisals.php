@@ -3,13 +3,13 @@
     $title = "Appraisals | Actemium";
     include("Header.php");
 
-    include("../Session/Team_Leader_Session.php");
+    include("../Session/Manager_Session.php");
 
     include("Database/Appraisals.php");
 
     include("../Functions/time_left.php");
 
-    $pending_appraisals = GetTeamAppraisalsData();
+    $pending_appraisals = GetEngineerAppraisalsData();
 
     //https://www.geeksforgeeks.org/sort-a-multidimensional-array-by-date-element-in-php/
     
@@ -32,7 +32,7 @@
 
             <div class="m-1 text-white bg-blue rounded d-flex justify-content-between">
 
-                <h3 class="m-3 text-start">Team Appraisals</h3>
+                <h3 class="m-3 text-start">Engineer Appraisals</h3>
 
                 <div class="my-auto mx-3">
                     <div class="input-group flex-end flex-row">
@@ -49,14 +49,7 @@
 
                 <div class="row row-cols-1 m-2">
 
-                    <?php if(count($pending_appraisals) == 0): ?>
-
-                    <p>Your Team Currently have no Pending Appraisals</p>
-
-                    <?php else: ?>
-
                     <?php foreach($pending_appraisals as $pending_appraisal): ?>
-
 
                     <?php $time_left = GetTimeLeft(new DateTime($pending_appraisal["date_due"])); ?>
 
@@ -77,7 +70,7 @@
 
                     ?>
 
-                    <a href="Appraisal_Data.php?id=<?php echo $pending_appraisal["appraisal_id"]; ?>"
+                    <a href="Appraisal_Engineers_Data.php?id=<?php echo $pending_appraisal["appraisal_id"]; ?>"
                         class="col border my-2 p-0 text-decoration-none text-black <?php if($is_past) { echo "past_appraisal d-none"; } else { echo "pending_appraisal"; } ?>">
 
                         <div class="d-md-flex justify-content-between m-2 text-center text-md-start">
@@ -114,17 +107,13 @@
 
                         </div>
 
-                        <!-- slider here -->
                     </a>
 
                     <?php endforeach; ?>
 
-                    <?php endif; ?>
-
                 </div>
 
             </div>
-
 
         </div>
 

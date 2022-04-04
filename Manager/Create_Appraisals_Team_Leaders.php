@@ -3,11 +3,11 @@
     $title = "Appraisals | Actemium";
     include("Header.php");
 
-    include("../Session/Team_Leader_Session.php");
+    include("../Session/Manager_Session.php");
 
-    include("Database/Engineers.php");
+    include("Database/Users.php");
 
-    $engineers = GetTeamMembers();
+    $team_leaders = GetTeamLeaders();
 
     $path = "Create_Appraisal.php";
 
@@ -28,15 +28,15 @@
 
     if(isset($_POST["submit"]))
     {
-        $_SESSION["appraisal"]["engineers"] = array_keys($_POST["engineers"]);
+        $_SESSION["appraisal"]["team_leaders"] = array_keys($_POST["team_leaders"]);
 
         header("Location:".$path);
         exit;
     }
 
-    if(isset($_SESSION["appraisal"]["engineers"]))
+    if(isset($_SESSION["appraisal"]["team_leaders"]))
     {
-        $engineer_data = $_SESSION["appraisal"]["engineers"];
+        $team_leader_data = $_SESSION["appraisal"]["team_leaders"];
     }
     
 ?>
@@ -48,22 +48,22 @@
 
         <div class="bg-blue text-white container ms-auto w-lg-50 rounded d-flex flex-column mt-5">
 
-            <h2 class="pb-4 pt-4 m-0">Team Members</h2>
+            <h2 class="pb-4 pt-4 m-0">Team Leaders</h2>
 
             <div class="container mt-3">
 
                 <form method="post" class="mt-3">
 
-                    <?php foreach($engineers as $engineer): ?>
+                    <?php foreach($team_leaders as $team_leader): ?>
 
                     <div class="d-flex bg-white text-black 
                         justify-content-between border my-1 mx-1 mx-md-4 text-start">
 
-                        <label class="my-2 mx-3"><?php echo $engineer["engineer_username"]; ?></label>
+                        <label class="my-2 mx-3"><?php echo $team_leader["team_leader_username"]; ?></label>
 
                         <input class="form-check-input my-auto mx-3 checkboxes" type="checkbox"
-                            name="engineers[<?php echo $engineer["engineer_username"]; ?>]"
-                            <?php if(isset($engineer_data)) { if(in_array($engineer["engineer_username"], $engineer_data)) { echo "checked"; } } ?>>
+                            name="team_leaders[<?php echo $team_leader["team_leader_username"]; ?>]"
+                            <?php if(isset($team_leader_data)) { if(in_array($team_leader["team_leader_username"], $team_leader_data)) { echo "checked"; } } ?>>
 
                     </div>
 
