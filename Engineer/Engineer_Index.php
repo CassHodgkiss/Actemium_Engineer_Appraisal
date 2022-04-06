@@ -56,47 +56,37 @@
 
                         <div class="row g-0">
 
-                            <div class="col-lg-4 p-3">
-                                <img class='img-fluid rounded-circle'
-                                    src="<?php echo "Database/Engineer_Pfp.php?id=" . $username ?>"
-                                    alt="Your Pfp Picture">
-                            </div>
+                            <div class="card-body p-0">
 
-                            <div class="col-lg-8">
+                                <div class="card-header bg-white border-0">
+                                    <h3 class="m-1 p-1 text-white bg-blue rounded">
+                                        <?php echo $engineer["first_name"] . " " . $engineer["last_name"]; ?></h3>
+                                </div>
 
-                                <div class="card-body p-0">
+                                <div class=" m-1">
 
-                                    <div class="card-header bg-white border-0">
-                                        <h3 class="m-1 p-1 text-white bg-blue rounded">
-                                            <?php echo $engineer["first_name"] . " " . $engineer["last_name"]; ?></h3>
+                                    <div class="d-flex">
+
+                                        <p class="m-0 w-50 p-2">Username</p>
+                                        <p class="m-0 w-50 p-2"><?php echo $username; ?></p>
+
                                     </div>
 
-                                    <div class=" m-1">
+                                    <hr class="m-1 mx-4">
 
-                                        <div class="d-flex">
+                                    <div class="d-flex">
 
-                                            <p class="m-0 w-50 p-2">Username</p>
-                                            <p class="m-0 w-50 p-2"><?php echo $username; ?></p>
+                                        <p class="m-0 w-50 p-2">Occupation</p>
+                                        <p class="m-0 w-50 p-2">Engineer</p>
 
-                                        </div>
+                                    </div>
 
-                                        <hr class="m-1 mx-4">
+                                    <hr class="m-1 mx-4">
 
-                                        <div class="d-flex">
+                                    <div class="d-flex">
 
-                                            <p class="m-0 w-50 p-2">Occupation</p>
-                                            <p class="m-0 w-50 p-2">Engineer</p>
-
-                                        </div>
-
-                                        <hr class="m-1 mx-4">
-
-                                        <div class="d-flex">
-
-                                            <p class="m-0 w-50 p-2">Team Leader</p>
-                                            <p class="m-0 w-50 p-2"><?php echo $engineer["team_leader_username"]; ?></p>
-
-                                        </div>
+                                        <p class="m-0 w-50 p-2">Team Leader</p>
+                                        <p class="m-0 w-50 p-2"><?php echo $engineer["team_leader_username"]; ?></p>
 
                                     </div>
 
@@ -329,10 +319,17 @@
 
                         </div>
 
+                        <?php if(count($appraisals_data) == 0): ?>
+
+                        <div class="border m-2 p-2">There are Currently no Pending Appraisals</div>
+
+                        <?php else: ?>
+
                         <div class="accordion accordion-flush border text-start m-3 mb-0 pending_overflow_items overflow-auto"
                             id="pendingAppraisals">
 
                             <?php 
+
                             foreach($appraisals_data as $appraisal_data): 
                             $appraisal_questions_done = GetAppraisalsAnswersData($appraisal_data["engineer_appraisal_id"]); 
                             $percentage = ($appraisal_questions_done / $appraisal_data["question_count"]) * 100 
@@ -429,6 +426,8 @@
                             <?php endforeach; ?>
 
                         </div>
+
+                        <?php endif; ?>
 
                         <a href="Appraisals.php" class="btn  btn-lg m-3 w-50 mx-auto ">View All Appraisals</a>
 

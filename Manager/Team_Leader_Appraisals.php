@@ -47,6 +47,12 @@
 
             <div class="container">
 
+                <?php if(count($pending_appraisals) == 0): ?>
+
+                <div class="border m-2 p-2">There are Currently no Engineer Appraisals</div>
+
+                <?php else: ?>
+
                 <div class="row row-cols-1 m-2">
 
                     <?php foreach($pending_appraisals as $pending_appraisal): ?>
@@ -112,6 +118,8 @@
                     <?php endforeach; ?>
 
                 </div>
+
+                <?php endif; ?>
 
             </div>
 

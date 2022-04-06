@@ -22,6 +22,7 @@
         $_SESSION["appraisal"]["engineers"] = [];
     }
 
+    
     if(isset($_POST["submit"]))
     {
         $_SESSION["appraisal"]["details"] = array
@@ -48,7 +49,7 @@
                     $appraisal_id = CreateAppraisal($details, count($questions));
                 
                     SetEngineers($engineers, $appraisal_id);
-                
+
                     CreateQuestions($questions, $appraisal_id);
                 
                     unset($_SESSION["appraisal"]);
@@ -56,11 +57,10 @@
                     $path = "Appraisal_Creation_Confirmation.php";
                     header("Location:".$path);
                     exit;
-                
                 }
                 else
                 {
-                    $error_msg = "No Engineers are Set";
+                    $error_msg = "No Users are Set";
                 }
             }
             else
@@ -90,12 +90,9 @@
         );
 
         $path = "Create_Appraisals_Questions.php";
-
-        if(isset($_SESSION["appraisal"]["questions"]))
-        {
-            $question_count = count($_SESSION["appraisal"]["questions"]);
-            $path = "Create_Appraisals_Questions.php?id=" . $question_count - 1;
-        }
+        
+        $question_count = count($_SESSION["appraisal"]["questions"]);
+        $path = "Create_Appraisals_Questions.php?id=" . $question_count - 1;
 
         header("Location:".$path);
         exit;
@@ -146,7 +143,6 @@
                             <label for="floatingStartDate">Start Date</label>
                         </div>
 
-
                         <div class="form-floating text-black">
                             <input type="date" class="form-control my-3" id="floatingEndDate" placeholder="End Date"
                                 name="end_date" value="<?php if($details_made) { echo $details_data["end_date"]; } ?>"
@@ -154,13 +150,15 @@
                             <label for="floatingEndDate">End Date</label>
                         </div>
 
-                        <div class="text-black d-flex flex-row mt-4 mb-4 justify-content-between">
+                        <div class="text-black d-flex flex-row mt-3 mb-4 justify-content-between">
 
-                            <button type="submit" name="add_questions" class="btn btn-green-border w-50 me-1">Add
-                                Questions</button>
+                            <button type="submit" name="add_questions" class="btn btn-green-border w-50 me-1">
+                                Add Questions
+                            </button>
 
-                            <button type="submit" name="add_engineers" class="btn btn-green-border w-50 ms-1">Add
-                                Engineers</button>
+                            <button type="submit" name="add_engineers" class="btn btn-green-border w-50 ms-1">
+                                Add Engineers
+                            </button>
 
                         </div>
 

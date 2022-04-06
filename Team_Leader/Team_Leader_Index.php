@@ -70,39 +70,29 @@
 
                         <div class="row g-0">
 
-                            <div class="col-lg-4 p-3">
-                                <img class='img-fluid rounded-circle'
-                                    src="<?php echo "Database/Team_Leader_Pfp.php?id=" . $username ?>"
-                                    alt="Your Pfp Picture">
-                            </div>
+                            <div class="card-body p-0">
 
-                            <div class="col-lg-8">
+                                <div class="card-header bg-white border-0">
+                                    <h3 class="m-1 p-1 text-white bg-blue rounded">
+                                        <?php echo $team_leader["first_name"] . " " . $team_leader["last_name"]; ?>
+                                    </h3>
+                                </div>
 
-                                <div class="card-body p-0">
+                                <div class=" m-1">
 
-                                    <div class="card-header bg-white border-0">
-                                        <h3 class="m-1 p-1 text-white bg-blue rounded">
-                                            <?php echo $team_leader["first_name"] . " " . $team_leader["last_name"]; ?>
-                                        </h3>
+                                    <div class="d-flex">
+
+                                        <p class="m-0 w-50 p-2">Username</p>
+                                        <p class="m-0 w-50 p-2"><?php echo $username; ?></p>
+
                                     </div>
 
-                                    <div class=" m-1">
+                                    <hr class="m-1 mx-4">
 
-                                        <div class="d-flex">
+                                    <div class="d-flex">
 
-                                            <p class="m-0 w-50 p-2">Username</p>
-                                            <p class="m-0 w-50 p-2"><?php echo $username; ?></p>
-
-                                        </div>
-
-                                        <hr class="m-1 mx-4">
-
-                                        <div class="d-flex">
-
-                                            <p class="m-0 w-50 p-2">Occupation</p>
-                                            <p class="m-0 w-50 p-2">Team Leader</p>
-
-                                        </div>
+                                        <p class="m-0 w-50 p-2">Occupation</p>
+                                        <p class="m-0 w-50 p-2">Team Leader</p>
 
                                     </div>
 

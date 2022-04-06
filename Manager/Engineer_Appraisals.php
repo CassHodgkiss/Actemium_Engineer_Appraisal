@@ -9,7 +9,19 @@
 
     include("../Functions/time_left.php");
 
-    $pending_appraisals = GetEngineerAppraisalsData();
+    date_default_timezone_set("Europe/London");
+    $current_date = new DateTime("now");
+
+    $current_appraisals = [];
+    $past_appraisals = [];
+    foreach(GetEngineerAppraisalsData() as $appraisal)
+    {
+        $end_date = new DateTime($appraisal["date_due"]);
+    
+        if($end_date > $current_date) { $current_appraisals[] = $appraisal; }
+        else { $past_appraisals[] = $appraisal; }
+    }
+
 
     //https://www.geeksforgeeks.org/sort-a-multidimensional-array-by-date-element-in-php/
     
@@ -19,7 +31,8 @@
         return $datetime1 - $datetime2;
     } 
     
-    usort($pending_appraisals, 'date_compare');
+    usort($current_appraisals, 'date_compare');
+    usort($past_appraisals, 'date_compare');
 
 ?>
 
@@ -37,7 +50,7 @@
                 <div class="my-auto mx-3">
                     <div class="input-group flex-end flex-row">
                         <select class="btn btn-green-border text-center px-2 py-2 w-100" id="option_select">
-                            <option value="pending_appraisal" class="bg-white text-black text-start">Pending</option>
+                            <option value="current_appraisal" class="bg-white text-black text-start">Pending</option>
                             <option value="past_appraisal" class="bg-white text-black text-start">Finished</option>
                         </select>
                     </div>
@@ -47,40 +60,28 @@
 
             <div class="container">
 
+                <?php if(count($current_appraisals) == 0): ?>
+
+                <div class="border m-2 p-2">There are Currently no Engineer Appraisals</div>
+
+                <?php else: ?>
+
                 <div class="row row-cols-1 m-2">
 
-                    <?php foreach($pending_appraisals as $pending_appraisal): ?>
+                    <?php foreach($current_appraisals as $current_appraisal): ?>
+                    <?php $time_left = GetTimeLeft(new DateTime($current_appraisal["date_due"])); ?>
 
-                    <?php $time_left = GetTimeLeft(new DateTime($pending_appraisal["date_due"])); ?>
-
-                    <?php  
-
-                    date_default_timezone_set("Europe/London");
-                    $current_date = new DateTime("now");
-                    $end_date = new DateTime($pending_appraisal["date_due"]);
-
-                    if($current_date < $end_date) 
-                    { 
-                        $is_past = FALSE; 
-                    } 
-                    else 
-                    { 
-                        $is_past = TRUE; 
-                    }
-
-                    ?>
-
-                    <a href="Appraisal_Engineers_Data.php?id=<?php echo $pending_appraisal["appraisal_id"]; ?>"
-                        class="col border my-2 p-0 text-decoration-none text-black <?php if($is_past) { echo "past_appraisal d-none"; } else { echo "pending_appraisal"; } ?>">
+                    <a href="Appraisal_Engineers_Data.php?id=<?php echo $current_appraisal["appraisal_id"]; ?>"
+                        class="col border my-2 p-0 text-decoration-none text-black current_appraisal">
 
                         <div class="d-md-flex justify-content-between m-2 text-center text-md-start">
 
                             <div class="m-2">
 
-                                <h2 class="h3"><?php echo $pending_appraisal["name"]; ?></h2>
+                                <h2 class="h3"><?php echo $current_appraisal["name"]; ?></h2>
 
                                 <p class="my-2 ms-1">
-                                    <?php echo $time_left; if($is_past) { echo " Ago"; } else { echo " Left"; } ?>
+                                    <?php echo $time_left . "Left"; ?>
                                 </p>
 
                             </div>
@@ -90,7 +91,7 @@
                                 <div class="d-flex">
 
                                     <p class="m-0 w-50 p-2">Start Date</p>
-                                    <p class="m-0 w-50 p-2"><?php echo $pending_appraisal["date_start"]?></p>
+                                    <p class="m-0 w-50 p-2"><?php echo $current_appraisal["date_start"]?></p>
 
                                 </div>
 
@@ -99,7 +100,51 @@
                                 <div class="d-flex">
 
                                     <p class="m-0 w-50 p-2">End Date</p>
-                                    <p class="m-0 w-50 p-2"><?php echo $pending_appraisal["date_due"]; ?></p>
+                                    <p class="m-0 w-50 p-2"><?php echo $current_appraisal["date_due"]; ?></p>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </a>
+
+                    <?php endforeach; ?>
+
+                    <?php foreach($past_appraisals as $past_appraisal): ?>
+
+
+                    <a href="Appraisal_Engineers_Data.php?id=<?php echo $past_appraisal["appraisal_id"]; ?>"
+                        class="col border my-2 p-0 text-decoration-none text-black past_appraisal d-none">
+
+                        <div class="d-md-flex justify-content-between m-2 text-center text-md-start">
+
+                            <div class="m-2">
+
+                                <h2 class="h3"><?php echo $past_appraisal["name"]; ?></h2>
+
+                                <p class="my-2 ms-1">
+                                    <?php echo $time_left . " Ago"; ?>
+                                </p>
+
+                            </div>
+
+                            <div class="mx-auto m-md-1 mt-3 mt-md-1 text-center" style="width: 250px">
+
+                                <div class="d-flex">
+
+                                    <p class="m-0 w-50 p-2">Start Date</p>
+                                    <p class="m-0 w-50 p-2"><?php echo $past_appraisal["date_start"]?></p>
+
+                                </div>
+
+                                <hr class="m-1">
+
+                                <div class="d-flex">
+
+                                    <p class="m-0 w-50 p-2">End Date</p>
+                                    <p class="m-0 w-50 p-2"><?php echo $past_appraisal["date_due"]; ?></p>
 
                                 </div>
 
@@ -112,6 +157,8 @@
                     <?php endforeach; ?>
 
                 </div>
+
+                <?php endif; ?>
 
             </div>
 
@@ -126,10 +173,10 @@ document.getElementById('option_select').addEventListener('change', function() {
 
     var value = this.value;
 
-    var pending_appraisals = document.getElementsByClassName("pending_appraisal");
+    var current_appraisals = document.getElementsByClassName("current_appraisal");
 
-    for (i = 0; i < pending_appraisals.length; i++) {
-        pending_appraisals[i].classList.add("d-none");
+    for (i = 0; i < current_appraisals.length; i++) {
+        current_appraisals[i].classList.add("d-none");
     }
 
     var past_appraisals = document.getElementsByClassName("past_appraisal");
@@ -141,10 +188,10 @@ document.getElementById('option_select').addEventListener('change', function() {
 
 
     switch (value) {
-        case "pending_appraisal":
+        case "current_appraisal":
 
-            for (i = 0; i < pending_appraisals.length; i++) {
-                pending_appraisals[i].classList.remove("d-none");
+            for (i = 0; i < current_appraisals.length; i++) {
+                current_appraisals[i].classList.remove("d-none");
             }
 
             break;

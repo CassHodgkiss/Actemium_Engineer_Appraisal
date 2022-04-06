@@ -3,7 +3,7 @@
     $title = "Appraisals | Actemium";
     include("Header.php");
 
-    include("../Session/Team_leader_Session.php");
+    include("../Session/Team_Leader_Session.php");
 
     //Check $_Get inputs are set
 
@@ -30,21 +30,19 @@
     include("Database/Appraisal_Question.php");
     include("Database/Appraisal_Answers.php");
 
-    $appraisal_data = GetAppraisalData($team_leader_appraisal_id);
+    $appraisal_data = GetAppraisalData($team_leader_appraisal_id, $appraisal_question);
 
     //Checks if the data is empty
     
     if($appraisal_data == NULL){
         $path = "Appraisals.php";
-        header("Location:".$path);
+        //header("Location:".$path);
         exit;
     }
 
     if($appraisal_question < 0) { header("Location:Appraisal_Questions.php?id=". $team_leader_appraisal_id ."&num=0"); exit;}
     if($appraisal_question > $appraisal_data["question_count"] - 1) { header("Location:Appraisal_Questions.php?id=". $team_leader_appraisal_id ."&num=". $appraisal_data['question_count'] - 1); exit;}
 
-
-    $appraisal_question_data = GetAppraisalQuestionData($team_leader_appraisal_id, $appraisal_question);
 
     $appraisal_answer_data = GetAppraisalAnswerData($team_leader_appraisal_id);
 
@@ -56,7 +54,7 @@
 
     $answered_table = [];
 
-    for($i = 0; $i < $appraisal_question_data["question_count"]; $i++)
+    for($i = 0; $i < $appraisal_data["question_count"]; $i++)
     {
         $answered_table[$i] = FALSE;
     }
@@ -69,19 +67,19 @@
     //User Input
 
     $error_msg = "";
-
+    
     if(isset($_POST["submit"])) 
     {
         $has_error = FALSE;
-        switch($appraisal_question_data["question_type"])
+        switch($appraisal_data["question_type"])
         {
-            case "writen":
+            case "0":
 
                 $answer = trim($_POST["answer"]);
 
                 if($answer == "") { $error_msg = "Cannot Accept an Empty Answer Box"; $has_error = TRUE; }
 
-                if($answered_current && $appraisal_answer_data[$appraisal_question]["answer"] == $answer) 
+                if($answered_current && $appraisal_answer_data[$appraisal_question]["answer_data"] == $answer) 
                 { 
                     $error_msg = "Given Answer is the Same as Current Answer";  
                     $has_error = TRUE; 
@@ -89,11 +87,11 @@
 
                 break;
                 
-            case "slider":
+            case "1":
 
                 $answer = $_POST["answer"];
 
-                if($answered_current && $appraisal_answer_data[$appraisal_question]["answer"] == $answer) 
+                if($answered_current && $appraisal_answer_data[$appraisal_question]["answer_data"] == $answer) 
                 { 
                     $error_msg = "Given Answer is the Same as Current Answer";  
                     $has_error = TRUE; 
@@ -101,7 +99,7 @@
 
                 break;
 
-            case "multi-choice":
+            case "2":
 
                 if(!isset($_POST["checkboxes"]))
                 {
@@ -113,7 +111,15 @@
                     $checkboxes = $_POST["checkboxes"];
                                     
                     $answer = [];
-                    foreach(explode("|", $appraisal_question_data["choices"]) as $choice)
+
+                    $question_data = explode("|", $appraisal_data["question_data"]);
+                    $choices = [];
+                    for($i = 1; $i < count($question_data); $i++)
+                    {
+                        $choices[] = $question_data[$i];
+                    }
+                    
+                    foreach($choices as $choice)
                     {
                         $answer[] = 0;
                     }
@@ -126,7 +132,7 @@
                     $answer = implode("|", $answer);
                 }
 
-                if($answered_current && $appraisal_answer_data[$appraisal_question]["answer"] == $answer) 
+                if($answered_current && $appraisal_answer_data[$appraisal_question]["answer_data"] == $answer) 
                 { 
                     $error_msg = "Given Answer is the Same as Current Answer";  
                     $has_error = TRUE; 
@@ -137,12 +143,11 @@
         if(!$has_error){
 
             if($answered_current){
-                UpdateAnswer($appraisal_question_data["question_id"], $appraisal_question_data["question_type"], $appraisal_data["team_leader_appraisal_id"], $answer);
+                UpdateAnswer($appraisal_data["team_leader_appraisal_id"], $appraisal_data["question_id"], $appraisal_data["question_type"], $answer);
             }
             else{
-                SaveAnswer($appraisal_data["team_leader_appraisal_id"], $appraisal_question_data["question_id"], $appraisal_question_data["question_type"], $answer);
+                SaveAnswer($appraisal_data["team_leader_appraisal_id"], $appraisal_data["question_id"], $appraisal_data["question_type"], $answer);
             }
-
             header("Location:Appraisal_Questions.php?id=". $team_leader_appraisal_id ."&num=". $appraisal_question); 
             exit;
 
@@ -160,15 +165,21 @@
         <div class="border my-2">
 
             <div class="container">
+
+                <?php
+                $question_data = explode("|", $appraisal_data["question_data"]);
+                $question = $question_data[0];
+                ?>
+
                 <h2 class="mt-4">Question <?php echo $appraisal_question + 1; ?></h2>
 
                 <h3 class="mt-4 m-2 text-start">
-                    <?php echo $appraisal_question_data["question"]; ?>
+                    <?php echo $question ?>
                 </h3>
 
                 <?php 
-                switch($appraisal_question_data["question_type"]):
-                case "writen": 
+                switch($appraisal_data["question_type"]):
+                case "0": 
                 ?>
 
                 <!-- Writen Question -->
@@ -178,7 +189,7 @@
                     <div class="m-1 m-md-3">
                         <textarea class="form-control my-3 p-2" rows="5" name="answer"
                             placeholder="Type your Answer Here"
-                            required><?php if($answered_current) { echo $appraisal_answer_data[$appraisal_question]["answer"]; } ?></textarea>
+                            required><?php if($answered_current) { echo $appraisal_answer_data[$appraisal_question]["answer_data"]; } ?></textarea>
                     </div>
 
                     <span class="text-danger"><?php echo $error_msg; ?></span>
@@ -191,34 +202,32 @@
 
                 <?php break; ?>
 
-                <?php case "slider": ?>
+                <?php case "1": ?>
 
                 <!-- Slider Question -->
 
+                <?php 
+                $lower_value = $question_data[1];
+                $upper_value = $question_data[2];
+                ?>
+
                 <form method="post" class="mt-5 range-field slidercontainer w-100 mt-1">
 
-                    <?php
-                        
-                    $lower = $appraisal_question_data["lower_value"];
-                    $upper = $appraisal_question_data["upper_value"];
-                    if($answered_current) { $answer = $appraisal_answer_data[$appraisal_question]["answer"]; }
-
-                    ?>
+                    <?php if($answered_current) { $answer = $appraisal_answer_data[$appraisal_question]["answer_data"]; } ?>
 
                     <p class="m-1 mt-3 text-center" id="slidervalue">
-                        <?php if($answered_current) { echo $answer; } else { echo $lower; } ?>
+                        <?php if($answered_current) { echo $answer; } else { echo $lower_value; } ?>
                     </p>
 
                     <div class="d-flex justify-content-evenly">
 
-                        <span class="font-weight-bold indigo-text m-0 h5"><?php echo $lower; ?></span>
+                        <span class="font-weight-bold indigo-text m-0 h5"><?php echo $lower_value; ?></span>
 
                         <input class="border-0 w-75 slider m-2" name="answer" type="range"
-                            value="<?php if($answered_current) { echo $answer; } else { echo $lower; } ?>"
-                            min="<?php echo $lower; ?>" max="<?php echo $upper; ?>"
+                            value="<?php if($answered_current) { echo $answer; } else { echo $lower_value; } ?>"
+                            min="<?php echo $lower_value; ?>" max="<?php echo $upper_value; ?>"
                             oninput="document.getElementById('slidervalue').innerHTML = this.value">
-
-                        <span class="font-weight-bold indigo-text m-0 h5"><?php echo $upper; ?></span>
+                        <span class="font-weight-bold indigo-text m-0 h5"><?php echo $upper_value; ?></span>
 
                     </div>
 
@@ -231,14 +240,21 @@
 
                 <?php break; ?>
 
-                <?php case "multi-choice": ?>
+                <?php case "2": ?>
 
                 <!-- Multi-Choice Question -->
 
+                <?php                     
+                $choices = [];
+                for($i = 1; $i < count($question_data); $i++)
+                {
+                    $choices[] = $question_data[$i];
+                }
+                ?>
+
                 <form method="post" class="mt-5">
 
-                    <?php if($answered_current) { $answers = explode("|", $appraisal_answer_data[$appraisal_question]["answer"]); } ?>
-                    <?php $choices = explode("|", $appraisal_question_data["choices"]); ?>
+                    <?php if($answered_current) { $answers = explode("|", $appraisal_answer_data[$appraisal_question]["answer_data"]); } ?>
 
                     <div class="mb-3">
                         <?php for($i = 0; $i < count($choices); $i++): ?>
@@ -256,7 +272,6 @@
                         </div>
 
                         <?php endfor; ?>
-
                     </div>
 
                     <span class="text-danger"><?php echo $error_msg; ?></span>
@@ -269,6 +284,7 @@
                 <?php endswitch; ?>
 
             </div>
+
         </div>
 
         <!-- Arrows -->
@@ -283,7 +299,7 @@
 
                     <a href="Appraisal_Questions.php?id=<?php echo $team_leader_appraisal_id; ?>&num=<?php echo $appraisal_question - 1; ?>"
                         class="btn border-0">
-                        <img src="../bootstrap-icons\arrow-left.svg" alt="Back" class="svg_arrow">
+                        <img src="../bootstrap-icons\arrow-left.svg" alt="Back" class="svg_arrow h-100">
                     </a>
 
                     <?php endif; ?>
@@ -293,18 +309,18 @@
                 <div class="col-4 d-flex justify-content-center">
 
                     <p class="border px-3 py-2 my-auto h3">
-                        <?php echo $appraisal_question + 1 . "/" . $appraisal_question_data["question_count"]; ?>
+                        <?php echo $appraisal_question + 1 . "/" . $appraisal_data["question_count"]; ?>
                     </p>
 
                 </div>
 
                 <div class="col-4 d-flex justify-content-end p-0">
 
-                    <?php if($appraisal_question < $appraisal_question_data["question_count"] - 1): ?>
+                    <?php if($appraisal_question < $appraisal_data["question_count"] - 1): ?>
 
                     <a href="Appraisal_Questions.php?id=<?php echo $team_leader_appraisal_id; ?>&num=<?php echo $appraisal_question + 1; ?>"
                         class="btn border-0">
-                        <img src="../bootstrap-icons\arrow-right.svg" alt="Next" class="svg_arrow">
+                        <img src="../bootstrap-icons\arrow-right.svg" alt="Next" class="svg_arrow h-100">
                     </a>
 
                     <?php else: ?>
@@ -321,7 +337,6 @@
 
         </div>
 
-
         <div class="my-5">
 
             <div class="container">
@@ -329,7 +344,7 @@
                 <div class="row">
 
                     <?php 
-                    $question_count = $appraisal_question_data["question_count"]; 
+                    $question_count = $appraisal_data["question_count"]; 
                     $width = (1/$question_count) * 100;
 
                     for($i = 0; $i < $question_count; $i++): 

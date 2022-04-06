@@ -2,7 +2,7 @@
 
     //Session Logic for Admin
 
-    $path = "../Index.php"; 
+    $path = "../Admin_Login.php"; 
      
     session_start();
 

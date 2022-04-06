@@ -8,7 +8,7 @@
         
         $stmt = $db->prepare($sql);
         
-        $usertype = "0";
+        $usertype = "2";
 
         $stmt->bindValue(':user_type', $usertype, SQLITE3_INTEGER);
         $stmt->bindValue(':username', $_POST["username"], SQLITE3_TEXT);

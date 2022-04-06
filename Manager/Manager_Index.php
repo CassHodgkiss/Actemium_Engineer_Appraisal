@@ -64,39 +64,29 @@
 
                         <div class="row g-0">
 
-                            <div class="col-lg-4 p-3">
-                                <img class='img-fluid rounded-circle'
-                                    src="<?php echo "Database/Manager_Pfp.php?id=" . $username ?>"
-                                    alt="Your Pfp Picture">
-                            </div>
+                            <div class="card-body p-0">
 
-                            <div class="col-lg-8">
+                                <div class="card-header bg-white border-0">
+                                    <h3 class="m-1 p-1 text-white bg-blue rounded">
+                                        <?php echo $manager["first_name"] . " " . $manager["last_name"]; ?>
+                                    </h3>
+                                </div>
 
-                                <div class="card-body p-0">
+                                <div class=" m-1">
 
-                                    <div class="card-header bg-white border-0">
-                                        <h3 class="m-1 p-1 text-white bg-blue rounded">
-                                            <?php echo $manager["first_name"] . " " . $manager["last_name"]; ?>
-                                        </h3>
+                                    <div class="d-flex">
+
+                                        <p class="m-0 w-50 p-2">Username</p>
+                                        <p class="m-0 w-50 p-2"><?php echo $username; ?></p>
+
                                     </div>
 
-                                    <div class=" m-1">
+                                    <hr class="m-1 mx-4">
 
-                                        <div class="d-flex">
+                                    <div class="d-flex">
 
-                                            <p class="m-0 w-50 p-2">Username</p>
-                                            <p class="m-0 w-50 p-2"><?php echo $username; ?></p>
-
-                                        </div>
-
-                                        <hr class="m-1 mx-4">
-
-                                        <div class="d-flex">
-
-                                            <p class="m-0 w-50 p-2">Occupation</p>
-                                            <p class="m-0 w-50 p-2">Manager</p>
-
-                                        </div>
+                                        <p class="m-0 w-50 p-2">Occupation</p>
+                                        <p class="m-0 w-50 p-2">Manager</p>
 
                                     </div>
 
@@ -171,18 +161,16 @@
 
                         </div>
 
+                        <?php if(count($engineer_appraisals) == 0): ?>
+
+                        <div class="border m-2 p-2">There are Currently no Engineer Appraisals</div>
+
+                        <?php else: ?>
+
                         <div class="accordion accordion-flush border text-start m-3 mb-0 pending_overflow_items overflow-auto"
                             id="teamAppraisals">
 
                             <?php foreach($team_leader_appraisals as $team_leader_appraisal): ?>
-
-                            <?php  
-                            date_default_timezone_set("Europe/London");
-                            $current_date = new DateTime("now");
-                            $end_date = new DateTime($team_leader_appraisal["date_due"]);
-                            
-                            if($end_date < $current_date) { continue; }
-                            ?>
 
                             <div class="accordion-item border m-2">
 
@@ -231,6 +219,8 @@
 
                         </div>
 
+                        <?php endif; ?>
+
                         <a href="Team_Leader_Appraisals.php" class="btn btn-lg m-3 w-50 mx-auto">View All Appraisals</a>
 
                     </div>
@@ -251,6 +241,12 @@
                             <h3 class="m-1 p-1 text-white bg-blue rounded">Pending Engineer Appraisals</h3>
 
                         </div>
+
+                        <?php if(count($team_leader_appraisals) == 0): ?>
+
+                        <div class="border m-2 p-2">There are Currently no Team Leader Appraisals</div>
+
+                        <?php else: ?>
 
                         <div class="accordion accordion-flush border text-start m-3 mb-0 pending_overflow_items overflow-auto"
                             id="engineerAppraisals">
@@ -303,6 +299,8 @@
                             <?php endforeach; ?>
 
                         </div>
+
+                        <?php endif; ?>
 
                         <a href="Engineer_Appraisals.php" class="btn btn-lg m-3 w-50 mx-auto">View All Appraisals</a>
 

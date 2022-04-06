@@ -11,7 +11,7 @@
 
     if(!isset($_GET["id"]))
     {
-        $path = "Appraisal_Data.php"; 
+        $path = "Appraisal_Team_Leaders_Data.php"; 
         header("Location:".$path);
         exit;
     }
@@ -51,7 +51,7 @@
 
         <?php 
         switch($appraisal_data["question_type"]):
-        case "writen": 
+        case "0": 
         ?>
 
         <!-- Writen Question -->
@@ -64,7 +64,7 @@
                     <h2 class="mt-4">Writen Question <?php echo $appraisal_question + 1; ?></h2>
 
                     <h3 class="mt-4 m-2 text-start">
-                        <?php echo $appraisal_data["question"]; ?>
+                        <?php echo $appraisal_data["question_data"]; ?>
                     </h3>
 
                 </div>
@@ -75,7 +75,7 @@
 
                 <div class="m-1 text-white bg-blue rounded d-flex justify-content-between">
 
-                    <h3 class="m-3 text-center">Team Leader Answers</h3>
+                    <h3 class="m-3 text-center">Team_Leader Answers</h3>
 
                 </div>
 
@@ -89,7 +89,7 @@
                                 <tr>
 
                                     <th scope="col" style="width: 20%;">
-                                        <p class="m-1 py-1">Team Leaders</p>
+                                        <p class="m-1 p-1">Team_Leaders</p>
                                     </th>
 
                                     <th scope="col" style="width: 80%;">
@@ -108,7 +108,8 @@
                                     <th scope="row"><?php echo $appraisal_answer_data["team_leader_username"]; ?></th>
 
                                     <td class="p-0">
-                                        <p class="m-1 p-1 text-start"><?php echo $appraisal_answer_data["answer"]; ?>
+                                        <p class="m-1 p-1 text-start">
+                                            <?php echo $appraisal_answer_data["answer_data"]; ?>
                                         </p>
                                     </td>
 
@@ -137,9 +138,17 @@
 
         <?php break; ?>
 
-        <?php case "slider": ?>
+        <?php case "1": ?>
 
         <!-- Slider Question -->
+
+        <?php 
+        $question_data = explode("|", $appraisal_data["question_data"]);
+        
+        $question = $question_data[0];
+        $lower_value = $question_data[1];
+        $upper_value = $question_data[2];
+        ?>
 
         <div>
             <div class="border my-2 m-2">
@@ -149,17 +158,15 @@
                     <h2 class="mt-4">Slider Question <?php echo $appraisal_question + 1; ?></h2>
 
                     <h3 class="my-4 m-2 text-start">
-                        <?php echo $appraisal_data["question"]; ?>
+                        <?php echo $question; ?>
                     </h3>
 
                     <div class="d-flex justify-content-evenly mb-4 m-1">
-                        <span
-                            class="font-weight-bold indigo-text m-0 h5"><?php echo $appraisal_data["lower_value"]; ?></span>
+                        <span class="font-weight-bold indigo-text m-0 h5"><?php echo $lower_value; ?></span>
 
                         <div class="border-0 w-75 slider m-2"></div>
 
-                        <span
-                            class="font-weight-bold indigo-text m-0 h5"><?php echo $appraisal_data["upper_value"]; ?></span>
+                        <span class="font-weight-bold indigo-text m-0 h5"><?php echo $upper_value; ?></span>
                     </div>
 
 
@@ -171,7 +178,7 @@
 
                 <div class="m-1 text-white bg-blue rounded d-flex justify-content-between">
 
-                    <h3 class="m-3 text-center">Team Leader Answers</h3>
+                    <h3 class="m-3 text-center">Team_Leader Answers</h3>
 
                     <div class="my-auto mx-3">
                         <div class="input-group flex-end flex-row">
@@ -193,7 +200,7 @@
     
                     //https://stackoverflow.com/questions/1597736/how-to-sort-an-array-of-associative-arrays-by-value-of-a-given-key-in-php
                     
-                    $answer = array_column($appraisal_answers_data, 'answer');
+                    $answer = array_column($appraisal_answers_data, 'answer_data');
                     
                     array_multisort($answer, SORT_ASC, $appraisal_answers_data);
                     
@@ -202,13 +209,13 @@
                     
                     foreach($appraisal_answers_data as $appraisal_answer_data)
                     {
-                        if(isset($values[$appraisal_answer_data["answer"]]))
+                        if(isset($values[$appraisal_answer_data["answer_data"]]))
                         {
-                            $values[$appraisal_answer_data["answer"]]++;
+                            $values[$appraisal_answer_data["answer_data"]]++;
                         }
                         else
                         {
-                            $values[$appraisal_answer_data["answer"]] = 1;
+                            $values[$appraisal_answer_data["answer_data"]] = 1;
                         }
                     }
                 
@@ -250,7 +257,7 @@
                                         <tr>
 
                                             <th scope="col" style="width: 20%;">
-                                                <p class="m-1 p-1">Team Leaders</p>
+                                                <p class="m-1 p-1">Team_Leaders</p>
                                             </th>
 
                                             <th scope="col" style="width: 80%;">
@@ -274,13 +281,13 @@
 
                                                 <div class="my-2">
                                                     <p class="m-0 text-center">
-                                                        <?php echo $appraisal_answer_data["answer"]; ?>
+                                                        <?php echo $appraisal_answer_data["answer_data"]; ?>
                                                     </p>
 
                                                     <input class="border-0 w-75 slider mt-2" type="range"
-                                                        value="<?php echo $appraisal_answer_data["answer"]; ?>"
-                                                        min="<?php echo $appraisal_data["lower_value"] ?>"
-                                                        max="<?php echo $appraisal_data["upper_value"] ?>"
+                                                        value="<?php echo $appraisal_answer_data["answer_data"]; ?>"
+                                                        min="<?php echo $lower_value ?>"
+                                                        max="<?php echo $upper_value ?>"
                                                         aria-label="readonly input example" disabled>
                                                 </div>
 
@@ -315,9 +322,21 @@
 
         <?php break; ?>
 
-        <?php case "multi-choice": ?>
+        <?php case "2": ?>
 
         <!-- Multi-Choice Question -->
+
+        <?php 
+        $question_data = explode("|", $appraisal_data["question_data"]);
+
+        $question = $question_data[0];
+        
+        $choices = [];
+        for($i = 1; $i < count($question_data); $i++)
+        {
+            $choices[] = $question_data[$i];
+        }
+        ?>
 
         <div>
             <div class="border my-2 m-2">
@@ -327,7 +346,7 @@
                     <h2 class="mt-4">Multi-Choice Question <?php echo $appraisal_question + 1; ?></h2>
 
                     <h3 class="my-4 m-2 text-start">
-                        <?php echo $appraisal_data["question"]; ?>
+                        <?php echo $question; ?>
                     </h3>
 
                 </div>
@@ -338,7 +357,7 @@
 
                 <div class="m-1 text-white bg-blue rounded d-flex justify-content-between">
 
-                    <h3 class="m-3 text-center">Team Leader Answers</h3>
+                    <h3 class="m-3 text-center">Team_Leader Answers</h3>
 
                     <div class="my-auto mx-3">
                         <div class="input-group flex-end flex-row">
@@ -358,9 +377,6 @@
                     <?php 
 
                     $values = [];
-                
-                    $choices = explode("|", $appraisal_data["choices"]);
-                
                     foreach($choices as $choice)
                     {
                         $values[$choice] = 0;
@@ -368,7 +384,7 @@
                 
                     foreach($appraisal_answers_data as $appraisal_answer_data)
                     {
-                        $answer = $appraisal_answer_data["answer"];
+                        $answer = $appraisal_answer_data["answer_data"];
                     
                         $answer = explode("|", $answer);
                     
@@ -390,16 +406,15 @@
                     <!-- Bar Chart -->
 
                     <div class="my-3 d-none" id="bar_chart">
+
                         <?php 
+                        $max = 0;
                     
-                    $max = 0;
-                
-                    foreach($values as $value)
-                    {
-                        if($value > $max) { $max = $value; }
-                    }
-                
-                    ?>
+                        foreach($values as $value)
+                        {
+                            if($value > $max) { $max = $value; }
+                        }
+                        ?>
 
                         <?php GenerateBarChart($values, $max); ?>
 
@@ -417,7 +432,7 @@
                                         <tr>
 
                                             <th scope="col" style="width: 20%;">
-                                                <p class="m-1 p-1">Team Leaders</p>
+                                                <p class="m-1 p-1">Team_Leaders</p>
                                             </th>
 
                                             <?php foreach($choices as $choice): ?>
@@ -436,7 +451,7 @@
 
                                         <?php 
                                 
-                                $answers = $appraisal_answer_data["answer"];
+                                $answers = $appraisal_answer_data["answer_data"];
 
                                 $answers = explode("|", $answers);
 
@@ -492,9 +507,7 @@
             </div>
         </div>
 
-
         <?php endswitch; ?>
-
 
         <!-- Arrows -->
 
@@ -508,7 +521,7 @@
 
                     <a href="Appraisal_Team_Leader_Question_Data.php?id=<?php echo $appraisal_id; ?>&num=<?php echo $appraisal_question - 1; ?>"
                         class="btn border-0">
-                        <img src="../bootstrap-icons\arrow-left.svg" alt="Back" class="svg_arrow">
+                        <img src="../bootstrap-icons\arrow-left.svg" alt="Back" class="svg_arrow h-100">
                     </a>
 
                     <?php endif; ?>
@@ -529,7 +542,7 @@
 
                     <a href="Appraisal_Team_Leader_Question_Data.php?id=<?php echo $appraisal_id; ?>&num=<?php echo $appraisal_question + 1; ?>"
                         class="btn border-0">
-                        <img src="../bootstrap-icons\arrow-right.svg" alt="Next" class="svg_arrow">
+                        <img src="../bootstrap-icons\arrow-right.svg" alt="Next" class="svg_arrow h-100">
                     </a>
 
                     <?php else: ?>
@@ -550,7 +563,7 @@
 
 </div>
 
-<?php if($appraisal_data["question_type"] != "writen"): ?>
+<?php if($appraisal_data["question_type"] != "0" && $has_answers): ?>
 
 <script>
 document.getElementById('option_select').addEventListener('change', function() {

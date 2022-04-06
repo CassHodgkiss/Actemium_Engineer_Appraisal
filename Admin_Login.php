@@ -14,10 +14,10 @@
         if($admin != NULL)
         {
             session_start();
-                $_SESSION['UserType'] = "Admin";
-                $_SESSION['Username'] = $_POST["username"];
+            $_SESSION['UserType'] = "Admin";
+            $_SESSION['Username'] = $_POST["username"];
             
-                header("Location: Admin/Admin_Index.php"); 
+            header("Location: Admin/Admin_Index.php"); 
             exit();
         }
 

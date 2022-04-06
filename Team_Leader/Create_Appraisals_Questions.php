@@ -26,7 +26,7 @@
     {
         $_SESSION["appraisal"]["questions"][$question_num] = array 
         (
-            "type" => "writen",
+            "type" => "0",
             "question" => $_POST["question"]
         );
     }
@@ -35,7 +35,7 @@
     {
         $_SESSION["appraisal"]["questions"][$question_num] = array 
         (
-            "type" => "slider",
+            "type" => "1",
             "question" => $_POST["question"],
             "min" => $_POST["min"],
             "max" => $_POST["max"]
@@ -46,7 +46,7 @@
     {
         $_SESSION["appraisal"]["questions"][$question_num] = array 
         (
-            "type" => "multi-choice",
+            "type" => "2",
             "question" => $_POST["question"],
             "choices" => $_POST["choices"]
         );
@@ -105,17 +105,17 @@
                         <select class="btn btn-green-border w-100 text-center px-2 py-2 w-100" id="option_select">
 
                             <option value="writen" class="bg-white text-black text-start"
-                                <?php if($question_made) { if($question_data["type"] == "writen") { echo "selected"; } } ?>>
+                                <?php if($question_made) { if($question_data["type"] == "0") { echo "selected"; } } ?>>
                                 Writen
                             </option>
 
                             <option value="slider" class="bg-white text-black text-start"
-                                <?php if($question_made) { if($question_data["type"] == "slider") { echo "selected"; } } ?>>
+                                <?php if($question_made) { if($question_data["type"] == "1") { echo "selected"; } } ?>>
                                 Slider
                             </option>
 
                             <option value="multi-choice" class="bg-white text-black text-start"
-                                <?php if($question_made) { if($question_data["type"] == "multi-choice") { echo "selected"; } } ?>>
+                                <?php if($question_made) { if($question_data["type"] == "2") { echo "selected"; } } ?>>
                                 Multi-Choice
                             </option>
 
@@ -129,7 +129,7 @@
 
                 <!-- Writen Question -->
 
-                <?php $made = FALSE; if($question_made) { if($question_data["type"] == "writen") { $made = TRUE; } } ?>
+                <?php $made = FALSE; if($question_made) { if($question_data["type"] == "0") { $made = TRUE; } } ?>
 
                 <div id="writen" class="d-none">
 
@@ -158,7 +158,7 @@
 
                 <!-- Slider Question -->
 
-                <?php $made = FALSE; if($question_made) { if($question_data["type"] == "slider") { $made = TRUE; } } ?>
+                <?php $made = FALSE; if($question_made) { if($question_data["type"] == "1") { $made = TRUE; } } ?>
 
                 <div id="slider" class="d-none">
 
@@ -203,7 +203,7 @@
 
                 <!-- Multi-Choice Question -->
 
-                <?php $made = FALSE; if($question_made) { if($question_data["type"] == "multi-choice") { $made = TRUE; } } ?>
+                <?php $made = FALSE; if($question_made) { if($question_data["type"] == "2") { $made = TRUE; } } ?>
 
                 <div id="multi-choice" class="d-none">
 
@@ -287,7 +287,7 @@
                     <?php if($question_num > 0): ?>
 
                     <a href="Create_Appraisals_Questions.php?id=<?php echo $question_num - 1; ?>" class="btn border-0">
-                        <img src="../bootstrap-icons\arrow-left.svg" alt="Back" class="svg_arrow">
+                        <img src="../bootstrap-icons\arrow-left.svg" alt="Back" class="svg_arrow h-100">
                     </a>
 
                     <?php endif; ?>
@@ -307,7 +307,7 @@
                     <?php if($question_num < $question_count - 1): ?>
 
                     <a href="Create_Appraisals_Questions.php?id=<?php echo $question_num + 1; ?>" class="btn border-0 ">
-                        <img src="../bootstrap-icons\arrow-right.svg" alt="Next" class="svg_arrow">
+                        <img src="../bootstrap-icons\arrow-right.svg" alt="Next" class="svg_arrow h-100">
                     </a>
 
                     <?php else: ?>
