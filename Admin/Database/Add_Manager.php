@@ -42,6 +42,8 @@
         $result = $stmt->execute();
 
         $result = $result->fetchArray();
+
+        print_r($result);
             
         if($result == NULL)
         {

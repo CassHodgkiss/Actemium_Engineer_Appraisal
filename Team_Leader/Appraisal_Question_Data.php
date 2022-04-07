@@ -32,7 +32,7 @@
     include("Database/Appraisal_Question_Data.php");
 
     $appraisal_data = GetAppraisalData($appraisal_id, $appraisal_question);
-    $appraisal_answers_data = GetEngineerAppraisalAnswerData($appraisal_id, $appraisal_question);
+    $appraisal_answers_data = GetEngineerAppraisalsAnswerData($appraisal_id, $appraisal_question);
 
     $has_answers = FALSE;
     if($appraisal_answers_data != NULL)
@@ -92,10 +92,13 @@
                                         <p class="m-1 p-1">Engineers</p>
                                     </th>
 
-                                    <th scope="col" style="width: 80%;">
+                                    <th scope="col" style="width: 65%;">
                                         <p class="m-1 p-1">Answers</p>
                                     </th>
 
+                                    <th scope="col" style="width: 15%;">
+                                        <p class="m-1 p-1">Actions</p>
+                                    </th>
 
                                 </tr>
                             </thead>
@@ -111,6 +114,13 @@
                                         <p class="m-1 p-1 text-start">
                                             <?php echo $appraisal_answer_data["answer_data"]; ?>
                                         </p>
+                                    </td>
+
+                                    <td class="p-0">
+                                        <a href="Set_Targets.php?id=<?php echo $appraisal_id; ?>&num=<?php echo $appraisal_question; ?>&engineer=<?php echo $appraisal_answer_data["engineer_username"]; ?>"
+                                            class="text-decoration-none">
+                                            <p class="m-1 p-1 text-black">Set Target</p>
+                                        </a>
                                     </td>
 
                                 </tr>
@@ -264,6 +274,9 @@
                                                 <p class="m-1 p-1">Answers</p>
                                             </th>
 
+                                            <th scope="col" style="width: 15%;">
+                                                <p class="m-1 p-1">Actions</p>
+                                            </th>
 
                                         </tr>
                                     </thead>
@@ -273,7 +286,7 @@
 
                                         <tr>
 
-                                            <th scope="row" class="align-middle">
+                                            <th scope="row" class="align-middle p-0">
                                                 <?php echo $appraisal_answer_data["engineer_username"]; ?>
                                             </th>
 
@@ -291,6 +304,13 @@
                                                         aria-label="readonly input example" disabled>
                                                 </div>
 
+                                            </td>
+
+                                            <td scope="row" class="align-middle p-0">
+                                                <a href="Set_Targets.php?id=<?php echo $appraisal_id; ?>&num=<?php echo $appraisal_question; ?>&engineer=<?php echo $appraisal_answer_data["engineer_username"]; ?>"
+                                                    class="text-decoration-none">
+                                                    <p class="m-1 p-1 text-black align-middle">Set Target</p>
+                                                </a>
                                             </td>
 
                                         </tr>
@@ -437,11 +457,15 @@
 
                                             <?php foreach($choices as $choice): ?>
 
-                                            <th scope="col" style="width: <?php echo 80 / count($choices) ?>%;">
+                                            <th scope="col" style="width: <?php echo 65 / count($choices) ?>%;">
                                                 <p class="m-1 p-1"><?php echo $choice; ?></p>
                                             </th>
 
                                             <?php endforeach; ?>
+
+                                            <th scope="col" style="width: 15%;">
+                                                <p class="m-1 p-1">Actions</p>
+                                            </th>
 
                                         </tr>
                                     </thead>
@@ -480,6 +504,13 @@
                                             <?php endif; ?>
 
                                             <?php endforeach; ?>
+
+                                            <td scope="row" class="align-middle p-0">
+                                                <a href="Set_Targets.php?id=<?php echo $appraisal_id; ?>&num=<?php echo $appraisal_question; ?>&engineer=<?php echo $appraisal_answer_data["engineer_username"]; ?>"
+                                                    class="text-decoration-none">
+                                                    <p class="m-1 p-1 text-black align-middle">Set Target</p>
+                                                </a>
+                                            </td>
 
                                         </tr>
 
