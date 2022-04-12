@@ -13,12 +13,52 @@
 
     include("../Functions/time_left.php");
 
+    $path = "Engineer_Index.php";
+
+    include("Database/Targets.php");
+    include("Database/Todo.php");
+    
+    if(isset($_POST["targetbasic"]))
+    {
+        $target_id = $_POST["targetbasic"];
+
+        SetTargetComplete($target_id);
+
+    }
+
+    if(isset($_POST["targetslider"]))
+    {
+        $target_id = $_POST["targetslider"];
+        $progress = $_POST["slider"];
+
+        UpdateTargetProgress($target_id, $progress);
+
+        unset($_POST["targetslider"]);
+    }
+
+    if(isset($_POST["todobasic"]))
+    {
+        $todo_id = $_POST["todobasic"];
+
+        SetToDoComplete($todo_id);
+
+    }
+
+    if(isset($_POST["todoslider"]))
+    {
+        $todo_id = $_POST["todoslider"];
+        $progress = $_POST["slider"];
+
+        UpdateToDoProgress($todo_id, $progress);
+
+        unset($_POST["todoslider"]);
+    }
+
     $appraisals_data = GetAppraisalsData();
 
     date_default_timezone_set("Europe/London");
     $current_date = new DateTime("now");
 
-    $appraisals_count = 0;
     $overdue_count = 0;
 
     foreach($appraisals_data as $appraisal_data){
@@ -28,8 +68,75 @@
         $has_completed = FALSE;
         if(GetAppraisalsAnswersData($appraisal_data["engineer_appraisal_id"]) == $appraisal_data["question_count"]) { $has_completed = TRUE; }
         
-        if($current_date > $start_date && $current_date < $end_date & !$has_completed) { $appraisals_count++; }
+        if($has_completed && $current_date > $end_date) { continue; }
+
         if($current_date > $start_date && $current_date > $end_date & !$has_completed) { $overdue_count++; }
+    }
+
+    $targets = GetTargets();
+
+    $pending_targets = []; 
+    $overdue_targets = [];        
+    foreach($targets as $target)
+    {
+        $end_date = new DateTime($target["date_due"]);
+
+        switch($target["target_type"])
+        {
+            case 0:
+
+                if(!$target["progress"])
+                {
+                    if($current_date > $end_date) { $overdue_targets[] = $target; }
+                    else { $pending_targets[] = $target; }
+                }
+
+                break;
+            case 1:
+
+                $target_data = explode("|", $target["target_data"]);
+
+                if($target["progress"] < $target_data[2])
+                {
+                    if($current_date > $end_date) { $overdue_targets[] = $target; }
+                    else { $pending_targets[] = $target; }
+                }
+                
+                break;
+        }
+    }
+
+    $todos = GetToDo();
+
+    $pending_todos = []; 
+    $overdue_todos = [];        
+    foreach($todos as $todo)
+    {
+        $end_date = new DateTime($todo["date_due"]);
+
+        switch($todo["todo_type"])
+        {
+            case 0:
+
+                if(!$todo["progress"])
+                {
+                    if($current_date > $end_date) { $overdue_todos[] = $todo; }
+                    else { $pending_todos[] = $todo; }
+                }
+
+                break;
+            case 1:
+
+                $todo_data = explode("|", $todo["todo_data"]);
+
+                if($todo["progress"] < $todo_data[2])
+                {
+                    if($current_date > $end_date) { $overdue_todos[] = $todo; }
+                    else { $pending_todos[] = $todo; }
+                }
+                
+                break;
+        }
     }
 
     function date_compare($element1, $element2) {
@@ -39,6 +146,10 @@
     } 
     
     usort($appraisals_data, 'date_compare');
+    usort($pending_targets, 'date_compare');
+    usort($overdue_targets, 'date_compare');
+    usort($pending_todos, 'date_compare');
+    usort($overdue_todos, 'date_compare');
 
 ?>
 
@@ -115,10 +226,10 @@
                                             class="img-fluid w-100 p-1">
                                     </div>
 
-                                    <p class="m-0 h5 col-9 col-lg-8">Pending Apraisals</p>
+                                    <p class="m-0 h5 col-9 col-lg-8">Apraisals</p>
 
                                     <span
-                                        class="badge bg-secondary col-2 p-2 rounded-pill"><?php echo $appraisals_count; ?></span>
+                                        class="badge bg-secondary col-2 p-2 rounded-pill"><?php echo count($appraisals_data); ?></span>
 
                                 </div>
 
@@ -163,7 +274,8 @@
 
                                     <p class="m-0 h5 col-9 col-lg-8">Team Targets</p>
 
-                                    <span class="badge bg-secondary col-2 p-2 rounded-pill">9</span>
+                                    <span
+                                        class="badge bg-secondary col-2 p-2 rounded-pill"><?php echo count($pending_targets); ?></span>
 
                                 </div>
 
@@ -186,31 +298,8 @@
 
                                     <p class="m-0 h5 col-9 col-lg-8">Overdue Team Targets</p>
 
-                                    <span class="badge bg-secondary col-2 p-2 rounded-pill">1</span>
-
-                                </div>
-
-                            </div>
-
-                        </div>
-
-
-                        <div class="col">
-
-                            <div class="container border">
-
-                                <div class="p-3 row align-items-center">
-
-                                    <div class="col-1 col-lg-2 p-0">
-
-                                        <img src="../bootstrap-icons\question-circle.svg" aria-hidden="true"
-                                            class="img-fluid w-100 p-1">
-
-                                    </div>
-
-                                    <p class="m-0 h5 col-9 col-lg-8">Additional Questions</p>
-
-                                    <span class="badge bg-secondary col-2 p-2 rounded-pill">9</span>
+                                    <span
+                                        class="badge bg-secondary col-2 p-2 rounded-pill"><?php echo count($overdue_targets); ?></span>
 
                                 </div>
 
@@ -241,54 +330,234 @@
 
                         </div>
 
+                        <div class="col">
+
+                            <div class="container border">
+
+                                <div class="p-3 row align-items-center">
+
+                                    <div class="col-1 col-lg-2 p-0">
+
+                                        <img src="../bootstrap-icons\list-ul.svg" aria-hidden="true"
+                                            class="img-fluid w-100 p-1">
+
+                                    </div>
+
+                                    <p class="m-0 h5 col-9 col-lg-8">Overdue To-Do</p>
+
+                                    <span class="badge bg-secondary col-2 p-2 rounded-pill">9</span>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
                     </div>
 
                 </section>
 
-                <section class="col mt-4">
+                <section class="col my-4">
 
                     <div class="card text-black">
 
                         <div class="card-header bg-white border-0">
 
-                            <h3 class="m-1 p-1 text-white bg-blue rounded">Additional Questions</h3>
+                            <h3 class="m-1 p-1 text-white bg-blue rounded">To-Do List</h3>
 
                         </div>
 
                         <div class="accordion accordion-flush border text-start m-3 pending_overflow_items overflow-auto"
-                            id="additionalQuestions">
+                            id="Todos">
 
-                            <?php for($i = 0; $i < 10; $i++): ?>
+                            <?php for($i = 0; $i < count($overdue_todos); $i++): ?>
+
+                            <?php $overdue_todo = $overdue_todos[$i]; ?>
+
+                            <?php 
+                            
+                            switch($overdue_todo["todo_type"])
+                            {
+                                case 0:
+                                    $todo = $overdue_todo["todo_data"];
+                                    break;
+                                case 1:
+                                    $todo_data = explode("|", $overdue_todo["todo_data"]);
+                                    $todo = $todo_data[0];
+                                    break;
+                            }
+
+                            ?>
 
                             <div class="accordion-item border m-2">
 
-                                <h2 class="accordion-header" id="additionalQuestionsHeading<?php echo $i; ?>">
+                                <h2 class="accordion-header" id="overdueTodosHeading<?php echo $i; ?>">
 
                                     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                        data-bs-target="#additionalQuestionsCollapse<?php echo $i; ?>"
-                                        aria-expanded="false"
-                                        aria-controls="additionalQuestionsCollapse<?php echo $i; ?>">
-                                        <img src="../bootstrap-icons\exclamation-circle.svg" alt="Warning Overdue"
-                                            class="img-fluid icon_svg me-2">
-                                        Additional Question From Caj2
+                                        data-bs-target="#overdueTodosCollapse<?php echo $i; ?>" aria-expanded="false"
+                                        aria-controls="overdueTodosCollapse<?php echo $i; ?>">
+                                        <img src="../bootstrap-icons\exclamation-triangle-fill.svg"
+                                            alt="Warning Overdue" class="img-fluid icon_svg me-2">
+                                        Objective set for
+                                        <?php echo (new DateTime($overdue_todo["date_due"]))->format('d M Y'); ?>
                                     </button>
 
                                 </h2>
-                                <div id="additionalQuestionsCollapse<?php echo $i; ?>"
-                                    class="accordion-collapse collapse"
-                                    aria-labelledby="additionalQuestionsHeading<?php echo $i; ?>">
+                                <div id="overdueTodosCollapse<?php echo $i; ?>" class="accordion-collapse collapse"
+                                    aria-labelledby="overdueTodosHeading<?php echo $i; ?>">
 
                                     <div class="accordion-body">
 
-                                        <form>
-                                            <label for="answer<?php echo $i; ?>" class="form-label">Lorem ipsum dolor
-                                                sit amet consectetur adipisicing elit. Sunt?</label>
-                                            <textarea class="form-control mt-2" id="answer<?php echo $i; ?>"
-                                                rows="2"></textarea>
-                                            <button type="submit" name="additional_questions"
-                                                id="answer<?php echo $i; ?>"
-                                                class="btn mt-3 w-75 mx-auto d-block">Submit</button>
+                                        <h4><?php echo $todo; ?></h4>
+
+                                        <p class="m-1 mt-1">Due for
+                                            <?php echo (new DateTime($overdue_todo["date_due"]))->format('d M Y'); ?>
+                                        </p>
+
+                                        <?php 
+                                        switch($overdue_todo["todo_type"]):
+                                        case 0: 
+                                        ?>
+
+                                        <form method="post" class="mx-auto mt-1">
+
+                                            <button class="btn m-auto mt-3 w-75 d-block" type="submit" name="todobasic"
+                                                value="<?php echo $overdue_todo["todo_id"]; ?>">Set
+                                                Complete</button>
+
                                         </form>
+
+                                        <?php break; ?>
+                                        <?php case 1: ?>
+
+                                        <form method="post" class="range-field slidercontainer w-100 mx-auto mt-1">
+
+                                            <p class="m-1 mt-3 text-center" id="overduetodoslider<?php echo $i; ?>">
+                                                <?php echo $overdue_todo["progress"]; ?>
+                                            </p>
+
+                                            <div class="d-flex justify-content-evenly">
+                                                <span
+                                                    class="font-weight-bold indigo-text m-0 h5"><?php echo $todo_data[1]; ?></span>
+                                                <input class="border-0 w-75 slider m-2" type="range" name="slider"
+                                                    value="<?php echo $overdue_todo["progress"]; ?>"
+                                                    min="<?php echo $todo_data[1]; ?>"
+                                                    max="<?php echo $todo_data[2]; ?>"
+                                                    oninput="document.getElementById('overduetodoslider<?php echo $i; ?>').innerHTML = this.value">
+                                                <span
+                                                    class="font-weight-bold indigo-text m-0 h5"><?php echo $todo_data[2]; ?></span>
+                                            </div>
+
+                                            <button class="btn m-auto mt-3 w-75 d-block" type="submit" name="todoslider"
+                                                value="<?php echo $overdue_todo["todo_id"]; ?>">Update
+                                                Progress</button>
+
+                                        </form>
+
+                                        <?php break; ?>
+
+                                        <?php endswitch; ?>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                            <?php endfor; ?>
+
+
+                            <?php for($i = 0; $i < count($pending_todos); $i++): ?>
+
+                            <?php $pending_todo = $pending_todos[$i]; ?>
+
+                            <?php 
+                            
+                            switch($pending_todo["todo_type"])
+                            {
+                                case 0:
+                                    $todo = $pending_todo["todo_data"];
+                                    break;
+                                case 1:
+                                    $todo_data = explode("|", $pending_todo["todo_data"]);
+                                    $todo = $todo_data[0];
+                                    break;
+                            }
+
+                            ?>
+
+                            <div class="accordion-item border m-2">
+
+                                <h2 class="accordion-header" id="TodosHeading<?php echo $i; ?>">
+
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                        data-bs-target="#TodosCollapse<?php echo $i; ?>" aria-expanded="false"
+                                        aria-controls="TodosCollapse<?php echo $i; ?>">
+                                        <img src="../bootstrap-icons\chat-square-dots.svg" alt="Warning Overdue"
+                                            class="img-fluid icon_svg me-2">
+                                        Objective set for
+                                        <?php echo (new DateTime($pending_todo["date_due"]))->format('d M Y'); ?>
+                                    </button>
+
+                                </h2>
+                                <div id="TodosCollapse<?php echo $i; ?>" class="accordion-collapse collapse"
+                                    aria-labelledby="TodosHeading<?php echo $i; ?>">
+
+                                    <div class="accordion-body">
+
+                                        <h4><?php echo $todo; ?></h4>
+
+                                        <p class="m-1 mt-1">
+                                            Set for <?php echo $pending_todo["engineer_username"]; ?>
+                                        </p>
+
+                                        <p class="m-1 mt-1">Due for
+                                            <?php echo (new DateTime($pending_todo["date_due"]))->format('d M Y'); ?>
+                                        </p>
+
+                                        <?php 
+                                        switch($pending_todo["todo_type"]):
+                                        case 0: 
+                                        ?>
+
+                                        <form method="post" class="mx-auto mt-1">
+
+                                            <button class="btn m-auto mt-3 w-75 d-block" type="submit" name="todobasic"
+                                                value="<?php echo $pending_todo["todo_id"]; ?>">Set
+                                                Complete</button>
+
+                                        </form>
+
+                                        <?php break; ?>
+                                        <?php case 1: ?>
+
+                                        <form method="post" class="range-field slidercontainer w-100 mx-auto mt-1">
+
+                                            <p class="m-1 mt-3 text-center" id="pendingtodoslider<?php echo $i; ?>">
+                                                <?php echo $pending_todo["progress"]; ?>
+                                            </p>
+
+                                            <div class="d-flex justify-content-evenly">
+                                                <span
+                                                    class="font-weight-bold indigo-text m-0 h5"><?php echo $todo_data[1]; ?></span>
+                                                <input class="border-0 w-75 slider m-2" type="range" name="slider"
+                                                    value="<?php echo $pending_todo["progress"]; ?>"
+                                                    min="<?php echo $todo_data[1]; ?>"
+                                                    max="<?php echo $todo_data[2]; ?>"
+                                                    oninput="document.getElementById('pendingtodoslider<?php echo $i; ?>').innerHTML = this.value">
+                                                <span
+                                                    class="font-weight-bold indigo-text m-0 h5"><?php echo $todo_data[2]; ?></span>
+                                            </div>
+
+                                            <button class="btn m-auto mt-3 w-75 d-block" type="submit" name="todoslider"
+                                                value="<?php echo $pending_todo["todo_id"]; ?>">Update
+                                                Progress</button>
+
+                                        </form>
+
+                                        <?php break; ?>
+
+                                        <?php endswitch; ?>
 
                                     </div>
 
@@ -299,6 +568,8 @@
                             <?php endfor; ?>
 
                         </div>
+
+                        <a href="Set_Objective.php" class="btn m-3 w-50 mx-auto ">Add Objective</a>
 
                     </div>
 
@@ -315,7 +586,7 @@
 
                         <div class="card-header bg-white border-0">
 
-                            <h3 class="m-1 p-1 text-white bg-blue rounded">Pending Appraisals</h3>
+                            <h3 class="m-1 p-1 text-white bg-blue rounded">Appraisals</h3>
 
                         </div>
 
@@ -346,11 +617,6 @@
                             } 
                             else 
                             { 
-                                if($appraisal_questions_done == $appraisal_data["question_count"])
-                                {
-                                    continue;
-                                }
-
                                 $overdue = TRUE; 
                             }
                             ?>
@@ -415,7 +681,7 @@
                                         </div>
 
                                         <a href="Appraisal_Questions.php?id=<?php echo $appraisal_data["engineer_appraisal_id"]; ?>"
-                                            class="btn  btn m-auto mt-3 w-75 d-block ">View Appraisal</a>
+                                            class="btn m-auto mt-3 w-75 d-block">View Appraisal</a>
 
                                     </div>
 
@@ -429,12 +695,11 @@
 
                         <?php endif; ?>
 
-                        <a href="Appraisals.php" class="btn  btn-lg m-3 w-50 mx-auto ">View All Appraisals</a>
+                        <a href="Appraisals.php" class="btn m-3 w-50 mx-auto ">View All Appraisals</a>
 
                     </div>
 
                 </section>
-
 
                 <section class="col my-4">
 
@@ -442,54 +707,104 @@
 
                         <div class="card-header bg-white border-0">
 
-                            <h3 class="m-1 p-1 text-white bg-blue rounded">Team Targets</h3>
+                            <h3 class="m-1 p-1 text-white bg-blue rounded">Targets</h3>
 
                         </div>
 
                         <div class="accordion accordion-flush border text-start m-3 pending_overflow_items overflow-auto"
                             id="teamTargets">
 
-                            <?php for($i = 0; $i < 10; $i++): ?>
+                            <?php for($i = 0; $i < count($overdue_targets); $i++): ?>
+
+                            <?php $overdue_target = $overdue_targets[$i]; ?>
+
+                            <?php 
+
+                            switch($overdue_target["target_type"])
+                            {
+                                case 0:
+                                    $target = $overdue_target["target_data"];
+                                    break;
+                                case 1:
+                                    $target_data = explode("|", $overdue_target["target_data"]);
+                                    $target = $target_data[0];
+                                    break;
+                            }
+
+                            ?>
 
                             <div class="accordion-item border m-2">
 
-                                <h2 class="accordion-header" id="teamTargetsHeading<?php echo $i; ?>">
+                                <h2 class="accordion-header" id="overdueteamTargetsHeading<?php echo $i; ?>">
 
                                     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                        data-bs-target="#teamTargetsCollapse<?php echo $i; ?>" aria-expanded="false"
-                                        aria-controls="teamTargetsCollapseCollapse<?php echo $i; ?>">
+                                        data-bs-target="#overdueteamTargetsCollapse<?php echo $i; ?>"
+                                        aria-expanded="false"
+                                        aria-controls="overdueteamTargetsCollapse<?php echo $i; ?>">
                                         <img src="../bootstrap-icons\exclamation-triangle-fill.svg"
                                             alt="Warning Overdue" class="img-fluid icon_svg me-2">
-                                        Team Target Overdue for 01 January 2022
+                                        Target set for
+                                        <?php echo (new DateTime($overdue_target["date_due"]))->format('d M Y'); ?>
                                     </button>
 
                                 </h2>
-                                <div id="teamTargetsCollapse<?php echo $i; ?>" class="accordion-collapse collapse"
-                                    aria-labelledby="teamTargetsHeading<?php echo $i; ?>">
+                                <div id="overdueteamTargetsCollapse<?php echo $i; ?>"
+                                    class="accordion-collapse collapse"
+                                    aria-labelledby="overdueteamTargetsHeading<?php echo $i; ?>">
 
                                     <div class="accordion-body">
 
-                                        <h4>7 Weeks of Training in HTML</h4>
+                                        <h4><?php echo $target; ?></h4>
 
-                                        <p class="m-1 mt-3">Set on 01 January 2022</p>
-                                        <p class="m-1 mt-1">Due for 01 March 2022</p>
+                                        <p class="m-1 mt-1">Due for
+                                            <?php echo (new DateTime($overdue_target["date_due"]))->format('d M Y'); ?>
+                                        </p>
 
-                                        <p class="m-1 mt-3 text-center" id="slider<?php $i; ?>">0</p>
+                                        <?php 
+                                        switch($overdue_target["target_type"]):
+                                        case 0: 
+                                        ?>
 
-                                        <!-- https://mdbootstrap.com/snippets/jquery/mdbootstrap/921605#html-tab-view -->
+                                        <form method="post" class="mx-auto mt-1">
 
-                                        <form class="range-field slidercontainer w-100 mx-auto mt-1">
+                                            <button class="btn m-auto mt-3 w-75 d-block" type="submit"
+                                                name="targetbasic"
+                                                value="<?php echo $overdue_target["target_id"]; ?>">Set
+                                                Complete</button>
+
+                                        </form>
+
+                                        <?php break; ?>
+                                        <?php case 1: ?>
+
+                                        <form method="post" class="range-field slidercontainer w-100 mx-auto mt-1">
+
+                                            <p class="m-1 mt-3 text-center" id="overduetargetslider<?php echo $i; ?>">
+                                                <?php echo $overdue_target["progress"]; ?>
+                                            </p>
 
                                             <div class="d-flex justify-content-evenly">
-                                                <span class="font-weight-bold indigo-text m-0 h5">0</span>
-                                                <input class="border-0 w-75 slider m-2" type="range" value="0" min="0"
-                                                    max="7"
-                                                    oninput="document.getElementById('slider<?php $i; ?>').innerHTML = this.value">
-                                                <span class="font-weight-bold indigo-text m-0 h5">7</span>
+                                                <span
+                                                    class="font-weight-bold indigo-text m-0 h5"><?php echo $target_data[1]; ?></span>
+                                                <input class="border-0 w-75 slider m-2" type="range" name="slider"
+                                                    value="<?php echo $overdue_target["progress"]; ?>"
+                                                    min="<?php echo $target_data[1]; ?>"
+                                                    max="<?php echo $target_data[2]; ?>"
+                                                    oninput="document.getElementById('overduetargetslider<?php echo $i; ?>').innerHTML = this.value">
+                                                <span
+                                                    class="font-weight-bold indigo-text m-0 h5"><?php echo $target_data[2]; ?></span>
                                             </div>
 
-                                            <button class="btn  btn m-auto mt-3 w-75  d-block">Update Progress</button>
+                                            <button class="btn m-auto mt-3 w-75 d-block" type="submit"
+                                                name="targetslider"
+                                                value="<?php echo $overdue_target["target_id"]; ?>">Update
+                                                Progress</button>
+
                                         </form>
+
+                                        <?php break; ?>
+
+                                        <?php endswitch; ?>
 
                                     </div>
 
@@ -499,54 +814,100 @@
 
                             <?php endfor; ?>
 
-                        </div>
 
-                    </div>
+                            <?php for($i = 0; $i < count($pending_targets); $i++): ?>
 
-                </section>
+                            <?php $pending_target = $pending_targets[$i]; ?>
 
+                            <?php 
+                            
+                            switch($pending_target["target_type"])
+                            {
+                                case 0:
+                                    $target = $pending_target["target_data"];
+                                    break;
+                                case 1:
+                                    $target_data = explode("|", $pending_target["target_data"]);
+                                    $target = $target_data[0];
+                                    break;
+                            }
 
-                <section class="col mt-4">
-
-                    <div class="card text-black">
-
-                        <div class="card-header bg-white border-0">
-
-                            <h3 class="m-1 p-1 text-white bg-blue rounded">To-Do List</h3>
-
-                        </div>
-
-                        <div class="accordion accordion-flush border text-start m-3 pending_overflow_items overflow-auto"
-                            id="pendingAppraisals">
-
-                            <?php for($i = 0; $i < 10; $i++): ?>
+                            ?>
 
                             <div class="accordion-item border m-2">
 
-                                <h2 class="accordion-header" id="todoHeading<?php echo $i; ?>">
+                                <h2 class="accordion-header" id="teamTargetsHeading<?php echo $i; ?>">
 
                                     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                        data-bs-target="#todoCollapse<?php echo $i; ?>" aria-expanded="false"
-                                        aria-controls="todoCollapse<?php echo $i; ?>">
-                                        <img src="../bootstrap-icons\exclamation-triangle-fill.svg"
-                                            alt="Warning Overdue" class="img-fluid icon_svg me-2">
-                                        Goal Made 01 January 2022
+                                        data-bs-target="#teamTargetsCollapse<?php echo $i; ?>" aria-expanded="false"
+                                        aria-controls="teamTargetsCollapse<?php echo $i; ?>">
+                                        <img src="../bootstrap-icons\chat-square-dots.svg" alt="Warning Overdue"
+                                            class="img-fluid icon_svg me-2">
+                                        Target set for
+                                        <?php echo (new DateTime($pending_target["date_due"]))->format('d M Y'); ?>
                                     </button>
 
                                 </h2>
-                                <div id="todoCollapse<?php echo $i; ?>" class="accordion-collapse collapse"
-                                    aria-labelledby="todoHeading<?php echo $i; ?>">
+                                <div id="teamTargetsCollapse<?php echo $i; ?>" class="accordion-collapse collapse"
+                                    aria-labelledby="teamTargetsHeading<?php echo $i; ?>">
 
                                     <div class="accordion-body">
 
-                                        <h4>Do Appraisals Today</h4>
+                                        <h4><?php echo $target; ?></h4>
 
-                                        <p class="m-1 mt-3">Set on 01 January 2022</p>
+                                        <p class="m-1 mt-1">
+                                            Set for <?php echo $pending_target["engineer_username"]; ?>
+                                        </p>
 
-                                        <form>
-                                            <button type="submit" name="todo" id="todo<?php echo $i; ?>"
-                                                class="btn  mt-3 w-75 mx-auto  d-block">Set Complete</button>
+                                        <p class="m-1 mt-1">Due for
+                                            <?php echo (new DateTime($pending_target["date_due"]))->format('d M Y'); ?>
+                                        </p>
+
+                                        <?php 
+                                        switch($pending_target["target_type"]):
+                                        case 0: 
+                                        ?>
+
+                                        <form method="post" class="mx-auto mt-1">
+
+                                            <button class="btn m-auto mt-3 w-75 d-block" type="submit"
+                                                name="targetbasic"
+                                                value="<?php echo $pending_target["target_id"]; ?>">Set
+                                                Complete</button>
+
                                         </form>
+
+                                        <?php break; ?>
+                                        <?php case 1: ?>
+
+                                        <form method="post" class="range-field slidercontainer w-100 mx-auto mt-1">
+
+                                            <p class="m-1 mt-3 text-center" id="pendingtargetslider<?php echo $i; ?>">
+                                                <?php echo $pending_target["progress"]; ?>
+                                            </p>
+
+                                            <div class="d-flex justify-content-evenly">
+                                                <span
+                                                    class="font-weight-bold indigo-text m-0 h5"><?php echo $target_data[1]; ?></span>
+                                                <input class="border-0 w-75 slider m-2" type="range" name="slider"
+                                                    value="<?php echo $pending_target["progress"]; ?>"
+                                                    min="<?php echo $target_data[1]; ?>"
+                                                    max="<?php echo $target_data[2]; ?>"
+                                                    oninput="document.getElementById('pendingtargetslider<?php echo $i; ?>').innerHTML = this.value">
+                                                <span
+                                                    class="font-weight-bold indigo-text m-0 h5"><?php echo $target_data[2]; ?></span>
+                                            </div>
+
+                                            <button class="btn m-auto mt-3 w-75 d-block" type="submit"
+                                                name="targetslider"
+                                                value="<?php echo $pending_target["target_id"]; ?>">Update
+                                                Progress</button>
+
+                                        </form>
+
+                                        <?php break; ?>
+
+                                        <?php endswitch; ?>
 
                                     </div>
 

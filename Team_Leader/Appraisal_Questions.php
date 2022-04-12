@@ -30,13 +30,13 @@
     include("Database/Appraisal_Question.php");
     include("Database/Appraisal_Answers.php");
 
-    $appraisal_data = GetAppraisalsData($team_leader_appraisal_id, $appraisal_question);
+    $appraisal_data = GetAppraisalData($team_leader_appraisal_id, $appraisal_question);
 
     //Checks if the data is empty
     
     if($appraisal_data == NULL){
         $path = "Appraisals.php";
-        //header("Location:".$path);
+        header("Location:".$path);
         exit;
     }
 

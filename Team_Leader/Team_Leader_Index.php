@@ -10,15 +10,49 @@
     $team_leader = GetTeamLeaderData();
 
     include("Database/Appraisals.php");
+    include("Database/Targets.php");
+
+    date_default_timezone_set("Europe/London");
+    $current_date = new DateTime("now");
+
+    $targets = GetTargets();
+
+    $pending_targets = []; 
+    $overdue_targets = [];        
+    foreach($targets as $target)
+    {
+        $end_date = new DateTime($target["date_due"]);
+
+        switch($target["target_type"])
+        {
+            case 0:
+
+                if(!$target["progress"])
+                {
+                    if($current_date > $end_date) { $overdue_targets[] = $target; }
+                    else { $pending_targets[] = $target; }
+                }
+
+                break;
+            case 1:
+
+                $target_data = explode("|", $target["target_data"]);
+
+                if($target["progress"] < $target_data[2])
+                {
+                    if($current_date > $end_date) { $overdue_targets[] = $target; }
+                    else { $pending_targets[] = $target; }
+                }
+                
+                break;
+        }
+    }
 
     include("../Functions/time_left.php");
 
     $appraisals_data = GetAppraisalsData();
 
     $e_appraisals = GetTeamAppraisalsData();
-    
-    date_default_timezone_set("Europe/London");
-    $current_date = new DateTime("now");
         
     $engineer_appraisals = [];
     foreach($e_appraisals as $e_appraisal)
@@ -53,6 +87,8 @@
     
     usort($appraisals_data, 'date_compare');
     usort($engineer_appraisals, 'date_compare');
+    usort($pending_targets, 'date_compare');
+    usort($overdue_targets, 'date_compare');
 
 ?>
 
@@ -121,7 +157,7 @@
                                             class="img-fluid w-100 p-1">
                                     </div>
 
-                                    <p class="m-0 h5 col-9 col-lg-8">Pending Apraisals</p>
+                                    <p class="m-0 h5 col-9 col-lg-8">Apraisals</p>
 
                                     <span
                                         class="badge bg-secondary col-2 p-2 rounded-pill"><?php echo $appraisals_count; ?></span>
@@ -153,6 +189,53 @@
 
                         </div>
 
+                        <div class="col">
+
+                            <div class="container border">
+
+                                <div class="p-3 row align-items-center">
+
+                                    <div class="col-1 col-lg-2 p-0">
+
+                                        <img src="../bootstrap-icons\chat-square-dots.svg" aria-hidden="true"
+                                            class="img-fluid w-100 p-1">
+
+                                    </div>
+
+                                    <p class="m-0 h5 col-9 col-lg-8">Team Targets</p>
+
+                                    <span
+                                        class="badge bg-secondary col-2 p-2 rounded-pill"><?php echo count($pending_targets); ?></span>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <div class="col">
+
+                            <div class="container border">
+
+                                <div class="p-3 row align-items-center">
+
+                                    <div class="col-1 col-lg-2 p-0">
+
+                                        <img src="../bootstrap-icons\exclamation-triangle-fill.svg" aria-hidden="true"
+                                            class="img-fluid w-100 p-1">
+
+                                    </div>
+
+                                    <p class="m-0 h5 col-9 col-lg-8">Overdue Team Targets</p>
+
+                                    <span
+                                        class="badge bg-secondary col-2 p-2 rounded-pill"><?php echo count($overdue_targets); ?></span>
+
+                                </div>
+
+                            </div>
+
+                        </div>
 
                         <div class="col">
 
@@ -178,97 +261,179 @@
 
                         </div>
 
-                        <div class="col">
-
-                            <div class="container border">
-
-                                <div class="p-3 row align-items-center">
-
-                                    <div class="col-1 col-lg-2 p-0">
-
-                                        <img src="../bootstrap-icons\chat-square-dots.svg" aria-hidden="true"
-                                            class="img-fluid w-100 p-1">
-
-                                    </div>
-
-                                    <p class="m-0 h5 col-9 col-lg-8">Team Targets</p>
-
-                                    <span class="badge bg-secondary col-2 p-2 rounded-pill">4</span>
-
-                                </div>
-
-                            </div>
-
-                        </div>
-
-
-                        <div class="col">
-
-                            <div class="container border">
-
-                                <div class="p-3 row align-items-center">
-
-                                    <div class="col-1 col-lg-2 p-0">
-
-                                        <img src="../bootstrap-icons\question-circle.svg" aria-hidden="true"
-                                            class="img-fluid w-100 p-1">
-
-                                    </div>
-
-                                    <p class="m-0 h5 col-9 col-lg-8">Additional Questions</p>
-
-                                    <span class="badge bg-secondary col-2 p-2 rounded-pill">4</span>
-
-                                </div>
-
-                            </div>
-
-                        </div>
-
                     </div>
 
                 </section>
 
-                <section class="col mt-4">
+                <section class="col my-4">
 
                     <div class="card text-black">
 
                         <div class="card-header bg-white border-0">
 
-                            <h3 class="m-1 p-1 text-white bg-blue rounded">Pending Questions</h3>
+                            <h3 class="m-1 p-1 text-white bg-blue rounded">Team Targets</h3>
 
                         </div>
 
                         <div class="accordion accordion-flush border text-start m-3 pending_overflow_items overflow-auto"
-                            id="additionalQuestions">
+                            id="teamTargets">
 
-                            <?php for($i = 0; $i < 2; $i++): ?>
+                            <?php for($i = 0; $i < count($overdue_targets); $i++): ?>
+
+                            <?php $overdue_target = $overdue_targets[$i]; ?>
+
+                            <?php 
+                            
+                            switch($overdue_target["target_type"])
+                            {
+                                case 0:
+                                    $target = $overdue_target["target_data"];
+                                    break;
+                                case 1:
+                                    $target_data = explode("|", $overdue_target["target_data"]);
+                                    $target = $target_data[0];
+                                    break;
+                            }
+
+                            ?>
 
                             <div class="accordion-item border m-2">
 
-                                <h2 class="accordion-header" id="additionalQuestionsHeading<?php echo $i; ?>">
+                                <h2 class="accordion-header" id="overdueteamTargetsHeading<?php echo $i; ?>">
 
                                     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                        data-bs-target="#additionalQuestionsCollapse<?php echo $i; ?>"
+                                        data-bs-target="#overdueteamTargetsCollapse<?php echo $i; ?>"
                                         aria-expanded="false"
-                                        aria-controls="additionalQuestionsCollapse<?php echo $i; ?>">
-                                        <img src="../bootstrap-icons\exclamation-circle.svg" alt="Warning Overdue"
-                                            class="img-fluid icon_svg me-2">
-                                        Additional Question For Caj
+                                        aria-controls="overdueteamTargetsCollapseCollapse<?php echo $i; ?>">
+                                        <img src="../bootstrap-icons\exclamation-triangle-fill.svg"
+                                            alt="Warning Overdue" class="img-fluid icon_svg me-2">
+                                        Target set for
+                                        <?php echo (new DateTime($overdue_target["date_due"]))->format('d M Y'); ?>
                                     </button>
 
                                 </h2>
-                                <div id="additionalQuestionsCollapse<?php echo $i; ?>"
+                                <div id="overdueteamTargetsCollapse<?php echo $i; ?>"
                                     class="accordion-collapse collapse"
-                                    aria-labelledby="additionalQuestionsHeading<?php echo $i; ?>">
+                                    aria-labelledby="overdueteamTargetsHeading<?php echo $i; ?>">
 
                                     <div class="accordion-body">
 
-                                        <form>
-                                            <label for="answer<?php echo $i; ?>" class="form-label">Lorem ipsum dolor
-                                                sit amet consectetur adipisicing elit. Sunt?</label>
+                                        <h4><?php echo $target; ?></h4>
 
-                                        </form>
+                                        <p class="m-1 mt-1">
+                                            Set for <?php echo $overdue_target["engineer_username"]; ?>
+                                        </p>
+
+                                        <p class="m-1 mt-1">Due for
+                                            <?php echo (new DateTime($overdue_target["date_due"]))->format('d M Y'); ?>
+                                        </p>
+
+                                        <?php 
+                                        switch($overdue_target["target_type"]):
+                                        case 0: 
+                                        ?>
+
+                                        <div class="border m-2">Not Completed</div>efsdfsdfds
+
+                                        <?php break; ?>
+                                        <?php case 1: ?>
+
+                                        <?php $percentage = ($overdue_target["progress"] / $target_data[2]) * 100  ?>
+
+                                        <div class="progress mt-2 m-1" style="height: 20px;">
+                                            <div class="progress-bar bg-danger" role="progressbar"
+                                                style="width: <?php echo $percentage; ?>%"
+                                                aria-valuenow="<?php echo $percentage; ?>" aria-valuemin="0"
+                                                aria-valuemax="<?php echo $appraisal_data["question_count"]; ?>">
+                                                <?php echo $overdue_target["progress"]; ?>/<?php echo $target_data[2]; ?>
+                                            </div>
+                                        </div>
+
+                                        <?php break; ?>
+
+                                        <?php endswitch; ?>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                            <?php endfor; ?>
+
+
+                            <?php for($i = 0; $i < count($pending_targets); $i++): ?>
+
+                            <?php $pending_target = $pending_targets[$i]; ?>
+
+                            <?php 
+                            
+                            switch($pending_target["target_type"])
+                            {
+                                case 0:
+                                    $target = $pending_target["target_data"];
+                                    break;
+                                case 1:
+                                    $target_data = explode("|", $pending_target["target_data"]);
+                                    $target = $target_data[0];
+                                    break;
+                            }
+
+                            ?>
+
+                            <div class="accordion-item border m-2">
+
+                                <h2 class="accordion-header" id="teamTargetsHeading<?php echo $i; ?>">
+
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                        data-bs-target="#teamTargetsCollapse<?php echo $i; ?>" aria-expanded="false"
+                                        aria-controls="teamTargetsCollapseCollapse<?php echo $i; ?>">
+                                        <img src="../bootstrap-icons\chat-square-dots.svg" alt="Warning Overdue"
+                                            class="img-fluid icon_svg me-2">
+                                        Target set for
+                                        <?php echo (new DateTime($pending_target["date_due"]))->format('d M Y'); ?>
+                                    </button>
+
+                                </h2>
+                                <div id="teamTargetsCollapse<?php echo $i; ?>" class="accordion-collapse collapse"
+                                    aria-labelledby="teamTargetsHeading<?php echo $i; ?>">
+
+                                    <div class="accordion-body">
+
+                                        <h4><?php echo $target; ?></h4>
+
+                                        <p class="m-1 mt-1">
+                                            Set for <?php echo $pending_target["engineer_username"]; ?>
+                                        </p>
+
+                                        <p class="m-1 mt-1">Due for
+                                            <?php echo (new DateTime($pending_target["date_due"]))->format('d M Y'); ?>
+                                        </p>
+
+                                        <?php 
+                                        switch($pending_target["target_type"]):
+                                        case 0: 
+                                        ?>
+
+                                        <div class="border my-2 p-2 text-center">Not Completed</div>
+
+                                        <?php break; ?>
+                                        <?php case 1: ?>
+
+                                        <?php $percentage = ($pending_target["progress"] / $target_data[2]) * 100  ?>
+
+                                        <div class="progress mt-2 m-1" style="height: 20px;">
+                                            <div class="progress-bar bg-danger" role="progressbar"
+                                                style="width: <?php echo $percentage; ?>%"
+                                                aria-valuenow="<?php echo $percentage; ?>" aria-valuemin="0"
+                                                aria-valuemax="<?php echo $appraisal_data["question_count"]; ?>">
+                                                <?php echo $pending_target["progress"]; ?>/<?php echo $target_data[2]; ?>
+                                            </div>
+                                        </div>
+
+                                        <?php break; ?>
+
+                                        <?php endswitch; ?>
 
                                     </div>
 
@@ -279,8 +444,6 @@
                             <?php endfor; ?>
 
                         </div>
-
-                        <a class="btn btn-lg m-3 w-50 mx-auto">View All Additional Questions</a>
 
                     </div>
 
@@ -297,7 +460,7 @@
 
                         <div class="card-header bg-white border-0">
 
-                            <h3 class="m-1 p-1 text-white bg-blue rounded">Pending Appraisals</h3>
+                            <h3 class="m-1 p-1 text-white bg-blue rounded">Appraisals</h3>
 
                         </div>
 
@@ -390,7 +553,7 @@
                                         </div>
 
                                         <a href="Appraisal_Questions.php?id=<?php echo $appraisal_data["team_leader_appraisal_id"]; ?>"
-                                            class="btn  btn m-auto mt-3 w-75 d-block ">View Appraisal</a>
+                                            class="btn m-auto mt-3 w-75 d-block ">View Appraisal</a>
 
                                     </div>
 
@@ -402,7 +565,7 @@
 
                         </div>
 
-                        <a href="Appraisals.php" class="btn btn-lg m-3 w-50 mx-auto">View All Appraisals</a>
+                        <a href="Appraisals.php" class="btn m-3 w-50 mx-auto">View All Appraisals</a>
 
                     </div>
 
@@ -414,7 +577,7 @@
 
                         <div class="card-header bg-white border-0">
 
-                            <h3 class="m-1 p-1 text-white bg-blue rounded">Pending Team Appraisals</h3>
+                            <h3 class="m-1 p-1 text-white bg-blue rounded">Team Appraisals</h3>
 
                         </div>
 
@@ -437,7 +600,7 @@
                                             class="img-fluid icon_svg me-2">
                                         Appraisal Set for
 
-                                        <?php echo (new DateTime($engineer_appraisal["date_due"]))->format('d M Y');?>
+                                        <?php echo (new DateTime($engineer_appraisal["date_due"]))->format('d M Y'); ?>
 
                                     </button>
 
@@ -458,7 +621,7 @@
                                         </p>
 
                                         <a href="Appraisal_Data.php?id=<?php echo $engineer_appraisal["appraisal_id"]; ?>"
-                                            class="btn  btn m-auto mt-3 w-75 d-block ">View Appraisal</a>
+                                            class="btn m-auto mt-3 w-75 d-block ">View Appraisal</a>
 
                                     </div>
 
@@ -470,65 +633,7 @@
 
                         </div>
 
-                        <a href="Team_Appraisals.php" class="btn btn-lg m-3 w-50 mx-auto">View All Appraisals</a>
-
-                    </div>
-
-                </section>
-
-                <section class="col my-4">
-
-                    <div class="card text-black">
-
-                        <div class="card-header bg-white border-0">
-
-                            <h3 class="m-1 p-1 text-white bg-blue rounded">Team Targets</h3>
-
-                        </div>
-
-                        <div class="accordion accordion-flush border text-start m-3 pending_overflow_items overflow-auto"
-                            id="teamTargets">
-
-                            <?php for($i = 0; $i < 4; $i++): ?>
-
-                            <div class="accordion-item border m-2">
-
-                                <h2 class="accordion-header" id="teamTargetsHeading<?php echo $i; ?>">
-
-                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                        data-bs-target="#teamTargetsCollapse<?php echo $i; ?>" aria-expanded="false"
-                                        aria-controls="teamTargetsCollapseCollapse<?php echo $i; ?>">
-                                        <img src="../bootstrap-icons\chat-square-dots.svg" alt="Warning Overdue"
-                                            class="img-fluid icon_svg me-2">
-                                        Team Target set for 01 January 2023
-                                    </button>
-
-                                </h2>
-                                <div id="teamTargetsCollapse<?php echo $i; ?>" class="accordion-collapse collapse"
-                                    aria-labelledby="teamTargetsHeading<?php echo $i; ?>">
-
-                                    <div class="accordion-body">
-
-                                        <h4>7 Weeks of Training in HTML</h4>
-
-                                        <p class="m-1 mt-3">Set on 01 January 2022</p>
-                                        <p class="m-1 mt-1">Due for 01 March 2022</p>
-
-                                        <!-- https://mdbootstrap.com/snippets/jquery/mdbootstrap/921605#html-tab-view -->
-
-                                        <button class="btn  btn m-auto mt-3 w-75  d-block">View Progress</button>
-
-                                    </div>
-
-                                </div>
-
-                            </div>
-
-                            <?php endfor; ?>
-
-                        </div>
-
-                        <a class="btn btn-lg m-3 w-50 mx-auto">View All Team Targets</a>
+                        <a href="Team_Appraisals.php" class="btn m-3 w-50 mx-auto">View All Appraisals</a>
 
                     </div>
 

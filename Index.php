@@ -22,6 +22,7 @@
                 
                     header("Location: Engineer/Engineer_Index.php"); 
                     exit();
+                    
                 case 1:
                     session_start();
                     $_SESSION['UserType'] = "Team_Leader";

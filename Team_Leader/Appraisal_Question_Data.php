@@ -270,7 +270,7 @@
                                                 <p class="m-1 p-1">Engineers</p>
                                             </th>
 
-                                            <th scope="col" style="width: 80%;">
+                                            <th scope="col" style="width: 65%;">
                                                 <p class="m-1 p-1">Answers</p>
                                             </th>
 

@@ -221,7 +221,7 @@
 
                         <?php endif; ?>
 
-                        <a href="Team_Leader_Appraisals.php" class="btn btn-lg m-3 w-50 mx-auto">View All Appraisals</a>
+                        <a href="Team_Leader_Appraisals.php" class="btn m-3 w-50 mx-auto">View All Appraisals</a>
 
                     </div>
 
@@ -302,7 +302,7 @@
 
                         <?php endif; ?>
 
-                        <a href="Engineer_Appraisals.php" class="btn btn-lg m-3 w-50 mx-auto">View All Appraisals</a>
+                        <a href="Engineer_Appraisals.php" class="btn m-3 w-50 mx-auto">View All Appraisals</a>
 
                     </div>
 
