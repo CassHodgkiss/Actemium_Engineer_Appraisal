@@ -1,6 +1,6 @@
 <?php
 
-    $title = "Appraisals | Actemium";
+    $title = "Actemium";
     include("Header.php");
 
     include("../Session/Team_Leader_Session.php");

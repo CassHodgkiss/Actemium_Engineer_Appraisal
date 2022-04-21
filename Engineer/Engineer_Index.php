@@ -507,10 +507,6 @@
 
                                         <h4><?php echo $todo; ?></h4>
 
-                                        <p class="m-1 mt-1">
-                                            Set for <?php echo $pending_todo["engineer_username"]; ?>
-                                        </p>
-
                                         <p class="m-1 mt-1">Due for
                                             <?php echo (new DateTime($pending_todo["date_due"]))->format('d M Y'); ?>
                                         </p>
@@ -854,10 +850,6 @@
                                     <div class="accordion-body">
 
                                         <h4><?php echo $target; ?></h4>
-
-                                        <p class="m-1 mt-1">
-                                            Set for <?php echo $pending_target["engineer_username"]; ?>
-                                        </p>
 
                                         <p class="m-1 mt-1">Due for
                                             <?php echo (new DateTime($pending_target["date_due"]))->format('d M Y'); ?>

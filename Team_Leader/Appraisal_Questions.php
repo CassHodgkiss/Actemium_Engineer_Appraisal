@@ -1,6 +1,6 @@
 <?php
 
-    $title = "Appraisals | Actemium";
+    $title = "Actemium";
     include("Header.php");
 
     include("../Session/Team_Leader_Session.php");
@@ -182,7 +182,7 @@
                 case "0": 
                 ?>
 
-                <!-- Writen Question -->
+                <!-- Written Question -->
 
                 <form method="post" class="mt-5">
 

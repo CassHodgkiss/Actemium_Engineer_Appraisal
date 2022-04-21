@@ -1,6 +1,6 @@
 <?php
 
-    $title = "Appraisals | Actemium";
+    $title = "Actemium";
     include("Header.php");
 
     include("../Session/Team_Leader_Session.php");
@@ -54,14 +54,14 @@
         case "0": 
         ?>
 
-        <!-- Writen Question -->
+        <!-- Written Question -->
 
         <div>
             <div class="border my-2 m-2">
 
                 <div class="container my-3">
 
-                    <h2 class="mt-4">Writen Question <?php echo $appraisal_question + 1; ?></h2>
+                    <h2 class="mt-4">Written Question <?php echo $appraisal_question + 1; ?></h2>
 
                     <h3 class="mt-4 m-2 text-start">
                         <?php echo $appraisal_data["question_data"]; ?>

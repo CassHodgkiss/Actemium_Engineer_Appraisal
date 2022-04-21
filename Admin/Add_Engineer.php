@@ -16,6 +16,9 @@
             if(CheckTeamLeaderUsername())
             {
                 AddEngineer();
+                $path = "Admin_Index.php"; 
+                header("Location:".$path);
+                exit;
             }
             else
             {

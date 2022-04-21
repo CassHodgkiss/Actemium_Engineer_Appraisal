@@ -1,6 +1,6 @@
 <?php
 
-    $title = "Appraisals | Actemium";
+    $title = "Actemium";
     include("Header.php");
 
     include("../Session/Manager_Session.php");
@@ -22,7 +22,7 @@
         if($question_num < 0) { $question_num = 0; }
     }
 
-    if(isset($_POST["writen"]))
+    if(isset($_POST["written"]))
     {
         $_SESSION["appraisal"]["questions"][$question_num] = array 
         (
@@ -104,9 +104,9 @@
                     <div class="input-group flex-end flex-row">
                         <select class="btn btn-green-border w-100 text-center px-2 py-2 w-100" id="option_select">
 
-                            <option value="writen" class="bg-white text-black text-start"
+                            <option value="written" class="bg-white text-black text-start"
                                 <?php if($question_made) { if($question_data["type"] == "0") { echo "selected"; } } ?>>
-                                Writen
+                                Written
                             </option>
 
                             <option value="slider" class="bg-white text-black text-start"
@@ -127,11 +127,11 @@
 
             <div class="mt-4">
 
-                <!-- Writen Question -->
+                <!-- Written Question -->
 
                 <?php $made = FALSE; if($question_made) { if($question_data["type"] == "0") { $made = TRUE; } } ?>
 
-                <div id="writen" class="d-none">
+                <div id="written" class="d-none">
 
                     <form method="post" class="d-flex">
 
@@ -146,7 +146,7 @@
 
                             <span class="text-danger"><?php echo $error_msg; ?></span>
 
-                            <button type="submit" name="writen"
+                            <button type="submit" name="written"
                                 class="btn mt-4 mb-3 mx-auto d-block"><?php if($made) { echo "Update"; } else { echo "Save"; }?></button>
 
                         </div>
@@ -380,8 +380,8 @@ function updateTypes() {
     console.log("h")
     var value = document.getElementById('option_select').value;
 
-    var writen = document.getElementById("writen");
-    writen.classList.add("d-none");
+    var written = document.getElementById("written");
+    written.classList.add("d-none");
 
     var slider = document.getElementById("slider");
     slider.classList.add("d-none");
@@ -390,9 +390,9 @@ function updateTypes() {
     multi_choice.classList.add("d-none");
 
     switch (value) {
-        case "writen":
+        case "written":
 
-            writen.classList.remove("d-none");
+            written.classList.remove("d-none");
             break;
         case "slider":
 

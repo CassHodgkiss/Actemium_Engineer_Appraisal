@@ -14,6 +14,9 @@
         if(CheckUsername())
         {
             AddTeamLeader();
+            $path = "Admin_Index.php"; 
+            header("Location:".$path);
+            exit;
         }
         else
         {
