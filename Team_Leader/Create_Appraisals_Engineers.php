@@ -28,7 +28,14 @@
 
     if(isset($_POST["submit"]))
     {
-        $_SESSION["appraisal"]["engineers"] = array_keys($_POST["engineers"]);
+        if(isset($_POST["engineers"]))
+        {
+            $_SESSION["appraisal"]["engineers"] = array_keys($_POST["engineers"]);
+        }
+        else
+        {
+            $_SESSION["appraisal"]["engineers"] = [];
+        }
 
         header("Location:".$path);
         exit;

@@ -5,7 +5,7 @@
         $db = new SQLITE3('C:/xampp/data/actemium.db');
 
         $sql = "SELECT * FROM Targets t
-        INNER JOIN Engineers e
+        INNER JOIN Engineers e ON e.engineer_username = t.engineer_username
         WHERE e.team_leader_username = :team_leader_username";
 
         $stmt = $db->prepare($sql);
@@ -18,7 +18,6 @@
         while ($row=$result->fetchArray())
         {        
             $results[]=$row;
-
         }
 
         return $results;

@@ -333,7 +333,7 @@
                                         case 0: 
                                         ?>
 
-                                        <div class="border m-2">Not Completed</div>efsdfsdfds
+                                        <div class="border m-2">Not Completed</div>
 
                                         <?php break; ?>
                                         <?php case 1: ?>
@@ -423,7 +423,7 @@
                                         <?php $percentage = ($pending_target["progress"] / $target_data[2]) * 100  ?>
 
                                         <div class="progress mt-2 m-1" style="height: 20px;">
-                                            <div class="progress-bar bg-danger" role="progressbar"
+                                            <div class="progress-bar" role="progressbar"
                                                 style="width: <?php echo $percentage; ?>%"
                                                 aria-valuenow="<?php echo $percentage; ?>" aria-valuemin="0"
                                                 aria-valuemax="<?php echo $appraisal_data["question_count"]; ?>">

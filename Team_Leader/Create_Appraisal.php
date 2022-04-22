@@ -34,7 +34,7 @@
 
         if($_SESSION["appraisal"]["details"]["start_date"] > $_SESSION["appraisal"]["details"]["end_date"])
         {
-            $error_msg = "End Date must be After than the Start Data";
+            $error_msg = "End Date must be After than the Start Date";
         }
         else
         {

@@ -132,10 +132,13 @@
                     $answer = implode("|", $answer);
                 }
 
-                if($answered_current && $appraisal_answer_data[$appraisal_question]["answer_data"] == $answer) 
-                { 
-                    $error_msg = "Given Answer is the Same as Current Answer";  
-                    $has_error = TRUE; 
+                if(isset($answer)){
+
+                    if($answered_current && $appraisal_answer_data[$appraisal_question]["answer_data"] == $answer) 
+                    { 
+                        $error_msg = "Given Answer is the Same as Current Answer";  
+                        $has_error = TRUE; 
+                    }
                 }
 
                 break;
